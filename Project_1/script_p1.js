@@ -55,7 +55,7 @@ class Player {
   }
 
   scoreUp() {
-    this.score += 1;
+    this.score++;
   }
 
   hitUp() {
@@ -80,20 +80,15 @@ const p1 = new Player("Player 1");
 // function playGame() {
 //   startButton.addEventListener("click", (e) => {
 //     console.log(e.startButton);
-//     playGame();
+//     newGame();
 //   });
 // }
 
-function playGame() {
-  //   newArrowSequence();
-  newGame();
-
-  setTimeout(finishGame, 18000);
-}
+let interval;
 
 function finishGame() {
   console.log(`game over`);
-  clearTimeout(randomExecutor); // cant seems to stop the game
+  clearInterval(interval);
 }
 
 // function for each new game
@@ -102,24 +97,20 @@ function newGame() {
   console.log(`new game starting`);
   clearRound();
   randomExecutor();
+  setTimeout(finishGame, 6000); // to change the timing
 }
 
-// function randomExecutor() {
-//   let i = 0;
-//   i < 60;
-//   setTimeout(function run() {
-//     randomArrowIndicator();
-//     i++;
-//     setTimeout(run, 500);
-//   }, 500);
-// }
-
+// runing the randomExecutor
 function randomExecutor() {
-  setInterval(randomArrowIndicator, 2000);
+  interval = setInterval(randomArrowIndicator, 2000); // to change the speed
 }
+
+let arrowIndicator = 0;
+let arrowTime;
+let p1KeydownTime;
 
 function randomArrowIndicator() {
-  const arrowIndicator = Math.floor(Math.random() * arrowArray.length);
+  arrowIndicator = Math.floor(Math.random() * arrowArray.length);
   console.log(arrowIndicator);
   if (arrowIndicator === 0) {
     arrowLeft();
@@ -130,36 +121,37 @@ function randomArrowIndicator() {
   } else if (arrowIndicator === 3) {
     arrowRight();
   }
-  document.addEventListener("keydown", (e) => {
-    console.log(e.key);
-    // prevent repeated keystrokes
-    if (e.repeat) {
-      return;
-    }
-    // only want the following (p1) keys to be detected
-    // part 2: add p2 keys
-    if (
-      e.key === "ArrowUp" ||
-      e.key === "ArrowDown" ||
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight"
-    ) {
-      if (arrowIndicator === 0 && e.key === "ArrowLeft") {
-        p1.hits.good += 1;
-      } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
-        p1.hits.good += 1;
-      } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
-        p1.hits.good += 1;
-      } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
-        p1.hits.good += 1;
-      } else {
-        p1.hits.missed += 1;
-      }
-      console.log(p1.hits);
-      // comparing speed to which the keydown happens and when the arrow first flash
-    }
-  });
 }
+
+// listening for keydown event for specific keys
+window.addEventListener("keydown", (e) => {
+  console.log(e.key);
+  // prevent repeated keystrokes
+  if (e.repeat) {
+    return;
+  }
+
+  // only want the following (p1) keys to be detected
+  // part 2: add p2 keys
+  if (arrowIndicator === 0 && e.key === "ArrowLeft") {
+    p1.hits.good++;
+    p1.scoreUp();
+  } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
+    p1.hits.good++;
+    p1.scoreUp();
+  } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
+    p1.hits.good++;
+    p1.scoreUp();
+  } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
+    p1.hits.good++;
+    p1.scoreUp();
+  } else {
+    p1.hits.missed++;
+  }
+  console.log(p1.hits);
+  p1ScoreBoard.innerText = p1.score;
+  // comparing speed to which the keydown happens and when the arrow first flash
+});
 
 const arrowLeft = () => {
   leftArrow.style.borderRight = "40px solid black";
@@ -197,74 +189,8 @@ const clearRound = () => {
   rightArrow.style.borderLeft = "40px solid lightgrey";
 };
 
-// listening for keydown event for specific keys
-// function keyDownDetection(arrowIndicator) {
-//   document.addEventListener("keydown", (e) => {
-//     console.log(e.key);
-//     // prevent repeated keystrokes
-//     if (e.repeat) {
-//       return;
-//     }
-//     // only want the following (p1) keys to be detected
-//     // part 2: add p2 keys
-//     if (
-//       e.key === "ArrowUp" ||
-//       e.key === "ArrowDown" ||
-//       e.key === "ArrowLeft" ||
-//       e.key === "ArrowRight"
-//     ) {
-//       if (arrowIndicator === 0 && e.key === "ArrowLeft") {
-//         p1.hits.good += 1;
-//       } else {
-//         p1.hits.missed += 1;
-//       }
-//       if (arrowIndicator === 1 && e.key === "ArrowUp") {
-//         p1.hits.good += 1;
-//       } else {
-//         p1.hits.missed += 1;
-//       }
-//       if (arrowIndicator === 2 && e.key === "ArrowDown") {
-//         p1.hits.good += 1;
-//       } else {
-//         p1.hits.missed += 1;
-//       }
-//       if (arrowIndicator === 3 && e.key === "ArrowRight") {
-//         p1.hits.good += 1;
-//       } else {
-//         p1.hits.missed += 1;
-//       }
-//       console.log(p1.hits);
-//       // comparing speed to which the keydown happens and when the arrow first flash
-//     }
-//   });
-// }
-
-// function judgeAccuracy() {
-//   if (arrowIndicator === 0 && e.key === "ArrowLeft") {
-//     p1.hits.good += 1;
-//   } else {
-//     p1.hits.missed += 1;
-//   }
-//   if (arrowIndicator === 1 && e.key === "ArrowUp") {
-//     p1.hits.good += 1;
-//   } else {
-//     p1.hits.missed += 1;
-//   }
-//   if (arrowIndicator === 2 && e.key === "ArrowDown") {
-//     p1.hits.good += 1;
-//   } else {
-//     p1.hits.missed += 1;
-//   }
-//   if (arrowIndicator === 3 && e.key === "ArrowRight") {
-//     p1.hits.good += 1;
-//   } else {
-//     p1.hits.missed += 1;
-//   }
-// }
-
-// write function judgeAccurracy()
-
 //== call function==//
 // keyDownDetection();
 // playGame();
+newGame();
 // randomExecutor();
