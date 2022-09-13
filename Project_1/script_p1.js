@@ -1,4 +1,5 @@
 console.log("Welcome to Tug-of-War");
+
 //////////////////////////////////////////////////////////////////////
 
 // setting up the variables
@@ -16,16 +17,28 @@ let win;
 // let arrowSequence = [];
 let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequence the arrow will flash
 
+//
+//--------------------------------------------------------------//
 // setting up querySelectors as variables
+//--------------------------------------------------------------//
 const startButton = document.querySelector("#start-btn");
 const timer = document.querySelector("#timer");
-const p1ScoreBoard = document.querySelector("#player1-score");
-const leftArrow = document.querySelector("#left");
-const upArrow = document.querySelector("#up");
-const downArrow = document.querySelector("#down");
-const rightArrow = document.querySelector("#right");
 
+const leftArrow = document.querySelector(".left-arrow");
+const upArrow = document.querySelector(".up-arrow");
+const downArrow = document.querySelector(".down-arrow");
+const rightArrow = document.querySelector(".right-arrow");
+
+// -- player 1 -- //
+const p1ScoreBoard = document.querySelector("#player1-score");
+
+// -- player 2 -- //
+const p2ScoreBoard = document.querySelector("#player2-score");
+
+//
+//--------------------------------------------------------------//
 // for generating players
+//--------------------------------------------------------------//
 class Player {
   constructor(
     name = "",
@@ -80,6 +93,7 @@ const scoreMultiplier = {
 };
 
 const p1 = new Player("Player 1");
+const p2 = new Player("Player 2");
 
 function playGame() {
   startButton.addEventListener("click", (e) => {
@@ -102,19 +116,29 @@ function newGame() {
   if (start === true) {
     console.log(`new game starting`);
     clearRound();
-    p1.resetHits();
-    p1ScoreBoard.innerText = 0;
+    resetAll();
     randomExecutor();
     setTimeout(finishGame, 6000); // to change the timing
   }
 }
 
+// function to reset scores
+function resetAll() {
+  p1.resetHits();
+  p1.score = 0;
+  p1ScoreBoard.innerText = 0;
+  p2.resetHits();
+  p2.score = 0;
+  p2ScoreBoard.innerText = 0;
+}
+
 // runing the randomExecutor
 function randomExecutor() {
-  interval = setInterval(randomArrowIndicator, 2000); // to change the speed
+  interval = setInterval(randomArrowIndicator, 1000); // to change the speed
 }
 
 let arrowIndicator = 0;
+let arrowIndicatorP2 = 0;
 let arrowTime;
 let p1KeydownTime;
 
@@ -135,7 +159,11 @@ function randomArrowIndicator() {
 // listening for keydown event for specific keys
 window.addEventListener("keydown", (e) => {
   if (start === true) {
-    // console.log(e.key);
+    console.log({
+      key: e.key,
+      arrowIndicator,
+      bool: arrowIndicator === 0 && e.key === "ArrowLeft",
+    });
     // prevent repeated keystrokes
     if (e.repeat) {
       return;
@@ -143,35 +171,60 @@ window.addEventListener("keydown", (e) => {
 
     // only want the following (p1) keys to be detected
     // part 2: add p2 keys
-    if (
-      e.key === "ArrowUp" ||
-      e.key === "ArrowDown" ||
-      e.key === "ArrowLeft" ||
-      e.key === "ArrowRight"
-    ) {
-      if (arrowIndicator === 0 && e.key === "ArrowLeft") {
+    if (e.key === "a" || e.key === "w" || e.key === "s" || e.key === "d") {
+      if (arrowIndicator === 0 && e.key === "a") {
+        console.log("hitting");
+        console.log({ p1 });
+        p1.hits.good++;
+        console.log({ p1 });
+        p1.scoreUp();
+      } else if (arrowIndicator === 1 && e.key === "w") {
         p1.hits.good++;
         p1.scoreUp();
-      } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
+      } else if (arrowIndicator === 2 && e.key === "s") {
         p1.hits.good++;
         p1.scoreUp();
-      } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
-        p1.hits.good++;
-        p1.scoreUp();
-      } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
+      } else if (arrowIndicator === 3 && e.key === "d") {
         p1.hits.good++;
         p1.scoreUp();
       } else {
         p1.hits.missed++;
       }
     }
-    console.log(p1.hits);
+    // console.log(p1.hits);
+    // console.log({ score: p1.score });
     p1ScoreBoard.innerText = p1.score; // comparing speed to which the keydown happens and when the arrow first flash
+
+    if (
+      e.key === "ArrowLeft" ||
+      e.key === "ArrowUp" ||
+      e.key === "ArrowDown" ||
+      e.key === "ArrowRight"
+    ) {
+      if (arrowIndicator === 0 && e.key === "ArrowLeft") {
+        p2.hits.good++;
+        p2.scoreUp();
+      } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
+        p2.hits.good++;
+        p2.scoreUp();
+      } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
+        p2.hits.good++;
+        p2.scoreUp();
+      } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
+        p2.hits.good++;
+        p2.scoreUp();
+      } else {
+        p2.hits.missed++;
+      }
+    }
+    console.log(p2.hits);
+    console.log({ score: p2.score });
+    p2ScoreBoard.innerText = p2.score;
   }
 });
 
 const arrowLeft = () => {
-  leftArrow.style.borderRight = "40px solid black";
+  leftArrow.style.borderRight = "40px solid yellow";
   upArrow.style.borderBottom = "40px solid lightgrey";
   downArrow.style.borderTop = "40px solid lightgrey";
   rightArrow.style.borderLeft = "40px solid lightgrey";
@@ -179,7 +232,7 @@ const arrowLeft = () => {
 
 const arrowUp = () => {
   leftArrow.style.borderRight = "40px solid lightgrey";
-  upArrow.style.borderBottom = "40px solid black";
+  upArrow.style.borderBottom = "40px solid yellow";
   downArrow.style.borderTop = "40px solid lightgrey";
   rightArrow.style.borderLeft = "40px solid lightgrey";
 };
@@ -187,7 +240,7 @@ const arrowUp = () => {
 const arrowDown = () => {
   leftArrow.style.borderRight = "40px solid lightgrey";
   upArrow.style.borderBottom = "40px solid lightgrey";
-  downArrow.style.borderTop = "40px solid black";
+  downArrow.style.borderTop = "40px solid yellow";
   rightArrow.style.borderLeft = "40px solid lightgrey";
 };
 
@@ -195,7 +248,7 @@ const arrowRight = () => {
   leftArrow.style.borderRight = "40px solid lightgrey";
   upArrow.style.borderBottom = "40px solid lightgrey";
   downArrow.style.borderTop = "40px solid lightgrey";
-  rightArrow.style.borderLeft = "40px solid black";
+  rightArrow.style.borderLeft = "40px solid yellow";
 };
 
 const clearRound = () => {
