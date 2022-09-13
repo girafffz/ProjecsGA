@@ -8,49 +8,76 @@
     <title>Document</title>
   </head>
   <body>
+    <!-- start of top section parent container -->
     <div class="flex" id="top">
-      <div class="box score-board" id="player1-score">Player 1</div>
-      <div class="box" id="top-center">
-        <div class="box" id="timer-start-container">container</div>
-        <div class="box" id="start">
-          <button id="start-btn">Start</button>
-          <div id="timer">timer</div>
-        </div>
+      <div class="box left" id="top-left">
+        <div class="box score-board" id="player1-score">Player 1</div>
       </div>
-      <div class="box score-board" id="player2-score">Player 2</div>
+      <div class="box center" id="top-center">
+        <div id="timer">60</div>
+      </div>
+      <div class="box right" id="top-right">
+        <div class="box score-board" id="player2-score">Player 2</div>
+      </div>
     </div>
+
+    <!-- start of mid section parent container -->
     <div class="flex" id="middle">
-      <div class="box" id="player1-side">player1 blank</div>
-      <div class="box" id="stage">
-        stage
-        <div class="box" id="health-bar-container">
-          <p>health bar container</p>
-          <div id="health-bar">health bar</div>
-        </div>
-        <div id="players-container">
-          <div id="player1">1</div>
-          <div id="rope">----</div>
-          <div id="player2">2</div>
+      <div class="box left" id="mid-left">
+        <div class="box" id="player1-side">player1 blank</div>
+      </div>
+      <div class="box center" id="mid-center">
+        <div class="box" id="stage">
+          <!-- start of health bar container -->
+          <div id="health-bar-main-container">
+            <div id="health-bar-container">
+              <!-- player 1 health -->
+              <div class="health-bar" id="player1-health-bar">health bar</div>
+              <!-- red box/timer -->
+              <div id="red-indicator"></div>
+              <!-- player 2 health -->
+              <div class="health-bar" id="player2-health-bar"></div>
+            </div>
+          </div>
+          <!-- end of health bar container -->
+          <div id="players-container">
+            Players Container
+            <div id="player1">1</div>
+            <div id="rope"></div>
+            <div id="player2">2</div>
+          </div>
         </div>
       </div>
-      <div class="box" id="player2-side">player2 blank</div>
+      <div class="box right" id="mid-right">
+        <div class="box" id="player2-side">player2 blank</div>
+      </div>
     </div>
+
+    <!-- start of bottom section parent container -->
     <div class="flex" id="bottom">
-      <div class="box arrow-container" id="player1-arrows">
-        <!-- <p>player1 arrows</p> -->
-        <div class="arrow left-arrow p1-arrow" id="left"></div>
-        <div class="arrow up-arrow p1-arrow" id="up"></div>
-        <div class="arrow down-arrow p1-arrow" id="down"></div>
-        <div class="arrow right-arrow p1-arrow" id="right"></div>
+      <div class="box left" id="bottom-left">
+        <div class="box arrow-container" id="player1-arrows">
+          <!-- <p>player1 arrows</p> -->
+          <div class="arrow left-arrow p1-arrow" id="left"></div>
+          <div class="arrow up-arrow p1-arrow" id="up"></div>
+          <div class="arrow down-arrow p1-arrow" id="down"></div>
+          <div class="arrow right-arrow p1-arrow" id="right"></div>
+        </div>
       </div>
-      <div class="box arrow-container" id="player2-arrows">
-        <!-- <p>player2 arrows</p> -->
-        <div class="arrow left-arrow p2-arrow" id="left-p2"></div>
-        <div class="arrow up-arrow p2-arrow" id="up-p2"></div>
-        <div class="arrow down-arrow p2-arrow" id="down-p2"></div>
-        <div class="arrow right-arrow p2-arrow" id="right-p2"></div>
+      <div class="box center" id="bottom-center">
+        <button id="start-btn">Start</button>
+      </div>
+      <div class="box right" id="bottom-right">
+        <div class="box arrow-container" id="player2-arrows">
+          <!-- <p>player2 arrows</p> -->
+          <div class="arrow left-arrow p2-arrow" id="left-p2"></div>
+          <div class="arrow up-arrow p2-arrow" id="up-p2"></div>
+          <div class="arrow down-arrow p2-arrow" id="down-p2"></div>
+          <div class="arrow right-arrow p2-arrow" id="right-p2"></div>
+        </div>
       </div>
     </div>
+
     <div class="footer">
       <p>created by: stephanie luo</p>
       <p>image by upklyak on Freepik</p>

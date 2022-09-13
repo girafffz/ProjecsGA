@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-image: url(../image/background_image_by_upklyak_on_Freepik.jpg);
   background-size: cover;
@@ -5,47 +9,52 @@ body {
   text-align: center;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 .flex {
   display: flex;
 }
 
-#top {
-  height: 100px;
-  margin-top: 15px;
+.box {
+  flex-grow: 0;
+  display: flex;
+  align-items: center;
+  border: 1px solid pink;
 }
 
-#top-center {
-  height: 50px;
+.left,
+.right {
+  width: 450px;
+}
+
+.center {
+  width: 636px;
+}
+
+#top {
+  height: 115px;
+  margin-top: 15px;
 }
 
 #middle {
   height: 420px;
 }
 
-#stage {
-  width: 360px;
-}
-
 #bottom {
   height: 100px;
 }
 
-.box {
-  flex-grow: 1;
-  align-items: center;
-  border: 1px solid pink;
-}
-
 .footer {
-  height: 50px;
+  height: 52px;
 }
 
 #start-btn {
   background-color: darkgrey;
   border-radius: 3px;
   cursor: pointer;
+  width: 100px;
+  height: 40px;
 }
 
 #start-btn:hover {
@@ -53,38 +62,65 @@ body {
   transition: 0.7s;
 }
 
+#timer {
+  border: 1px solid white;
+  width: 120px;
+  height: 100px;
+  font-size: 4.5em;
+  color: white;
+  padding: 5px;
+}
+
 .score-board {
-  height: 65px;
-  width: 150px;
+  height: 100px;
+  width: 350px;
   background-color: rgba(255, 255, 255, 0.5);
   border: 2px solid white;
   border-radius: 5px;
   color: black;
   text-align: center;
   padding: 5px;
-  font-size: 55px;
+  font-size: 60px;
   align-self: center;
 }
 
 #players-container {
-  display: inline-block;
   position: relative;
+  background-color: azure;
 }
 
 #player1 {
   width: 80px;
   height: 150px;
-  background-color: slategray;
+  background-color: darkgoldenrod;
+  position: absolute;
+  margin-top: 140px;
+  margin-left: 60px;
 }
 
 #player2 {
   width: 80px;
   height: 150px;
   background-color: slateblue;
+  position: absolute;
+  margin-top: 115px;
+  margin-left: 510px;
+}
+
+#rope {
+  width: 400px;
+  height: 5px;
+  background-color: sienna;
+  border: 1px solid saddlebrown;
+  position: absolute;
+  margin-top: 220px;
+  margin-left: 140px;
+  transform: skew(0.06turn, -4deg);
 }
 
 .arrow-container {
   display: flex;
+  height: 100px;
   gap: 25px;
 }
 
@@ -169,6 +205,6 @@ body {
 } */
 
 .footer {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.25);
   padding: 5px;
 }
