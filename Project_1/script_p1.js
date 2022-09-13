@@ -15,9 +15,6 @@ let intervalCount; // not relevant unless p1 and p2 continue playing
 let win;
 // let arrowSequence = [];
 let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequence the arrow will flash
-// sequence is made up of random numbers between 0 and 3
-// arrow: left = 1, up = 2, down = 3, right = 4
-// 60 numbers will be pushed into the order
 
 // setting up querySelectors as variables
 const startButton = document.querySelector("#start-btn");
@@ -58,12 +55,19 @@ class Player {
     this.score++;
   }
 
-  hitUp() {
-    if (perfect) this.hits.perfect += 1;
-    if (good) this.hits.good += 1;
-    if (bad) this.hits.bad += 1;
-    if (missed) this.hits.missed += 1;
+  resetHits() {
+    this.hits.perfect = 0;
+    this.hits.good = 0;
+    this.hits.bad = 0;
+    this.hits.missed = 0;
   }
+
+  //   hitUp() {
+  //     if (perfect) this.hits.perfect += 1;
+  //     if (good) this.hits.good += 1;
+  //     if (bad) this.hits.bad += 1;
+  //     if (missed) this.hits.missed += 1;
+  //   }
 }
 
 const scoreMultiplier = {
@@ -77,12 +81,11 @@ const scoreMultiplier = {
 
 const p1 = new Player("Player 1");
 
-// function playGame() {
-//   startButton.addEventListener("click", (e) => {
-//     console.log(e.startButton);
-//     newGame();
-//   });
-// }
+function playGame() {
+  startButton.addEventListener("click", (e) => {
+    newGame();
+  });
+}
 
 let interval;
 
@@ -96,6 +99,8 @@ function newGame() {
   // if (start = true)
   console.log(`new game starting`);
   clearRound();
+  p1.resetHits();
+  p1ScoreBoard.innerText = 0;
   randomExecutor();
   setTimeout(finishGame, 6000); // to change the timing
 }
@@ -124,7 +129,7 @@ function randomArrowIndicator() {
 }
 
 // listening for keydown event for specific keys
-window.addEventListener("keydown", (e) => {
+document.addEventListener("keydown", (e) => {
   console.log(e.key);
   // prevent repeated keystrokes
   if (e.repeat) {
@@ -133,20 +138,27 @@ window.addEventListener("keydown", (e) => {
 
   // only want the following (p1) keys to be detected
   // part 2: add p2 keys
-  if (arrowIndicator === 0 && e.key === "ArrowLeft") {
-    p1.hits.good++;
-    p1.scoreUp();
-  } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
-    p1.hits.good++;
-    p1.scoreUp();
-  } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
-    p1.hits.good++;
-    p1.scoreUp();
-  } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
-    p1.hits.good++;
-    p1.scoreUp();
-  } else {
-    p1.hits.missed++;
+  if (
+    e.key === "ArrowUp" ||
+    e.key === "ArrowDown" ||
+    e.key === "ArrowLeft" ||
+    e.key === "ArrowRight"
+  ) {
+    if (arrowIndicator === 0 && e.key === "ArrowLeft") {
+      p1.hits.good++;
+      p1.scoreUp();
+    } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
+      p1.hits.good++;
+      p1.scoreUp();
+    } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
+      p1.hits.good++;
+      p1.scoreUp();
+    } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
+      p1.hits.good++;
+      p1.scoreUp();
+    } else {
+      p1.hits.missed++;
+    }
   }
   console.log(p1.hits);
   p1ScoreBoard.innerText = p1.score;
@@ -191,6 +203,6 @@ const clearRound = () => {
 
 //== call function==//
 // keyDownDetection();
-// playGame();
-newGame();
+playGame();
+// newGame();
 // randomExecutor();

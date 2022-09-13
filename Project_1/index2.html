@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div class="flex" id="top">
+      <div class="box score-board" id="player1-score">p1:0</div>
+      <div class="box" id="top-center">
+        <div class="box" id="timer-start-container">container</div>
+        <div class="box" id="start">
+          <button id="start-btn">Start</button>
+          <div id="timer">timer</div>
+        </div>
+      </div>
+      <div class="box score-board" id="player2-score">p2:0</div>
+    </div>
+    <div class="flex" id="middle">
+      <div class="box" id="player1-side">player1 blank</div>
+      <div class="box" id="stage">
+        stage
+        <div class="box" id="health-bar-container">
+          <p>health bar container</p>
+          <div id="health-bar">health bar</div>
+        </div>
+      </div>
+      <div class="box" id="player2-side">player2 blank</div>
+    </div>
+    <div class="flex" id="bottom">
+      <div class="box arrow-container" id="player1-arrows">
+        <!-- <p>player1 arrows</p> -->
+        <div class="arrow p1-arrow" id="left"></div>
+        <div class="arrow p1-arrow" id="up"></div>
+        <div class="arrow p1-arrow" id="down"></div>
+        <div class="arrow p1-arrow" id="right"></div>
+      </div>
+      <div class="box arrow-container" id="player2-arrows">
+        <!-- <p>player2 arrows</p> -->
+        <span class="arrow p2-arrow" id="left"></span>
+        <span class="arrow p2-arrow" id="up"></span>
+        <span class="arrow p2-arrow" id="down"></span>
+        <span class="arrow p2-arrow" id="right"></span>
+      </div>
+    </div>
+    <div class="footer">
+      <p>created by: stephanie luo</p>
+      <p>image by upklyak on Freepik</p>
+
+      <!-- script -->
+      <script src="script_p1.js" charset="UTF-8"></script>
+    </div>
+  </body>
+</html>
