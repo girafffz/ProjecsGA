@@ -2,19 +2,20 @@ console.log("Welcome to Tug-of-War");
 
 //////////////////////////////////////////////////////////////////////
 
+//
+//--------------------------------------------------------------//
 // setting up the variables
+//--------------------------------------------------------------//
 let start = false;
+let gameOver = false;
 let countDownTimer; // need to show?
 let score = 0;
 // let combo = 0; // later
 // let maxCombo = 0; // later
 let sound;
 let flash;
-let turn; // maybe not relevant
-let compTurn; // maybe not relevant
-let intervalCount; // not relevant unless p1 and p2 continue playing
-let win;
-// let arrowSequence = [];
+let interval;
+let arrowIndicator = 0;
 let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequence the arrow will flash
 
 //
@@ -23,13 +24,8 @@ let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequenc
 //--------------------------------------------------------------//
 const startButton = document.querySelector("#start-btn");
 const timer = document.querySelector("#timer");
-
-// const leftArrow = document.querySelector(".left-arrow");
-// const upArrow = document.querySelector(".up-arrow");
-// const downArrow = document.querySelector(".down-arrow");
-// const rightArrow = document.querySelector(".right-arrow");
-
-const healthBar = document.querySelector("#hpProgress");
+const healthBar = document.querySelector("#hp-progress");
+const result = document.querySelector("#display-result");
 
 // -- player 1 -- //
 const p1ScoreBoard = document.querySelector("#player1-score");
@@ -103,32 +99,22 @@ class Player {
   //   }
 }
 
-const scoreMultiplier = {
-  perfect: 2,
-  good: 1,
-  bad: 0.5,
-  missed: 0,
-  // combo30: 1.05,
-  // combo60: 1.10,
-};
-
 const p1 = new Player("Player 1", undefined, undefined, undefined);
-const p2 = new Player("Player 2");
+const p2 = new Player("Player 2", undefined, undefined, undefined);
 
+//
+//--------------------------------------------------------------//
+// for generating new game/round
+//--------------------------------------------------------------//
+
+// function to start a game by clicking start button
 function playGame() {
   startButton.addEventListener("click", (e) => {
     start = true;
+    gameOver = false;
     console.log(start);
     newGame();
   });
-}
-
-let interval;
-
-function finishGame() {
-  console.log(`game over`);
-  clearInterval(interval);
-  start = false;
 }
 
 // function for each new game
@@ -142,6 +128,49 @@ function newGame() {
   }
 }
 
+// function for finishing a game
+function finishGame() {
+  console.log(`game over`);
+  clearInterval(interval);
+  start = false;
+  gameOver = true;
+  win();
+}
+
+// function for clearing a game
+const clearRound = () => {
+  console.log(`colors reset`);
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "65px solid lightgrey";
+  p1UpArrow.style.borderBottom = "65px solid lightgrey";
+  p1DownArrow.style.borderTop = "65px solid lightgrey";
+  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "65px solid lightgrey";
+  p2UpArrow.style.borderBottom = "65px solid lightgrey";
+  p2DownArrow.style.borderTop = "65px solid lightgrey";
+  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- hiding results --//
+  result.style.display = "none";
+};
+
+// function for winning
+function win() {
+  if (gameOver === true) {
+    result.style.display = "block";
+
+    if (p1.health > p2.health) {
+      result.innerText = "Game Over\nPlayer 1 Wins!";
+    } else if (p1.health < p2.health) {
+      console.log("Player 2 Wins!");
+      result.innerText = "Game Over\nPlayer 2 Wins!";
+    } else {
+      console.log("It is a draw!");
+      result.innerText = "Game Over\nIt is a draw!";
+    }
+  }
+}
+
 // function to reset scores
 function resetAll() {
   p1.resetHits();
@@ -152,16 +181,17 @@ function resetAll() {
   p2ScoreBoard.innerText = 0;
 }
 
-// runing the randomExecutor
+//
+//--------------------------------------------------------------//
+// game play
+//--------------------------------------------------------------//
+
+// function to run random arrow indicator at set intervals
 function randomExecutor() {
   interval = setInterval(randomArrowIndicator, 1000); // to change the speed
 }
 
-let arrowIndicator = 0;
-// let arrowIndicatorP2 = 0;
-// let arrowTime;
-// let p1KeydownTime;
-
+// function to determine which arrows will change colors
 function randomArrowIndicator() {
   arrowIndicator = Math.floor(Math.random() * arrowArray.length);
   console.log(arrowIndicator);
@@ -175,6 +205,61 @@ function randomArrowIndicator() {
     arrowRight();
   }
 }
+
+//
+//-- changing arrow colors --//
+
+const arrowLeft = () => {
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "65px solid yellow";
+  p1UpArrow.style.borderBottom = "65px solid lightgrey";
+  p1DownArrow.style.borderTop = "65px solid lightgrey";
+  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "65px solid yellow";
+  p2UpArrow.style.borderBottom = "65px solid lightgrey";
+  p2DownArrow.style.borderTop = "65px solid lightgrey";
+  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+};
+
+const arrowUp = () => {
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "65px solid lightgrey";
+  p1UpArrow.style.borderBottom = "65px solid yellow";
+  p1DownArrow.style.borderTop = "65px solid lightgrey";
+  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "65px solid lightgrey";
+  p2UpArrow.style.borderBottom = "65px solid yellow";
+  p2DownArrow.style.borderTop = "65px solid lightgrey";
+  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+};
+
+const arrowDown = () => {
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "65px solid lightgrey";
+  p1UpArrow.style.borderBottom = "65px solid lightgrey";
+  p1DownArrow.style.borderTop = "65px solid yellow";
+  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "65px solid lightgrey";
+  p2UpArrow.style.borderBottom = "65px solid lightgrey";
+  p2DownArrow.style.borderTop = "65px solid yellow";
+  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+};
+
+const arrowRight = () => {
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "65px solid lightgrey";
+  p1UpArrow.style.borderBottom = "65px solid lightgrey";
+  p1DownArrow.style.borderTop = "65px solid lightgrey";
+  p1RightArrow.style.borderLeft = "65px solid yellow";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "65px solid lightgrey";
+  p2UpArrow.style.borderBottom = "65px solid lightgrey";
+  p2DownArrow.style.borderTop = "65px solid lightgrey";
+  p2RightArrow.style.borderLeft = "65px solid yellow";
+};
 
 // listening for keydown event for specific keys
 window.addEventListener("keydown", (e) => {
@@ -251,78 +336,22 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-const arrowLeft = () => {
-  //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "40px solid yellow";
-  p1UpArrow.style.borderBottom = "40px solid lightgrey";
-  p1DownArrow.style.borderTop = "40px solid lightgrey";
-  p1RightArrow.style.borderLeft = "40px solid lightgrey";
-  //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "40px solid yellow";
-  p2UpArrow.style.borderBottom = "40px solid lightgrey";
-  p2DownArrow.style.borderTop = "40px solid lightgrey";
-  p2RightArrow.style.borderLeft = "40px solid lightgrey";
-};
-
-const arrowUp = () => {
-  //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "40px solid lightgrey";
-  p1UpArrow.style.borderBottom = "40px solid yellow";
-  p1DownArrow.style.borderTop = "40px solid lightgrey";
-  p1RightArrow.style.borderLeft = "40px solid lightgrey";
-  //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "40px solid lightgrey";
-  p2UpArrow.style.borderBottom = "40px solid yellow";
-  p2DownArrow.style.borderTop = "40px solid lightgrey";
-  p2RightArrow.style.borderLeft = "40px solid lightgrey";
-};
-
-const arrowDown = () => {
-  //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "40px solid lightgrey";
-  p1UpArrow.style.borderBottom = "40px solid lightgrey";
-  p1DownArrow.style.borderTop = "40px solid yellow";
-  p1RightArrow.style.borderLeft = "40px solid lightgrey";
-  //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "40px solid lightgrey";
-  p2UpArrow.style.borderBottom = "40px solid lightgrey";
-  p2DownArrow.style.borderTop = "40px solid yellow";
-  p2RightArrow.style.borderLeft = "40px solid lightgrey";
-};
-
-const arrowRight = () => {
-  //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "40px solid lightgrey";
-  p1UpArrow.style.borderBottom = "40px solid lightgrey";
-  p1DownArrow.style.borderTop = "40px solid lightgrey";
-  p1RightArrow.style.borderLeft = "40px solid yellow";
-  //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "40px solid lightgrey";
-  p2UpArrow.style.borderBottom = "40px solid lightgrey";
-  p2DownArrow.style.borderTop = "40px solid lightgrey";
-  p2RightArrow.style.borderLeft = "40px solid yellow";
-};
-
-const clearRound = () => {
-  console.log(`colors reset`);
-  //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "40px solid lightgrey";
-  p1UpArrow.style.borderBottom = "40px solid lightgrey";
-  p1DownArrow.style.borderTop = "40px solid lightgrey";
-  p1RightArrow.style.borderLeft = "40px solid lightgrey";
-  //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "40px solid lightgrey";
-  p2UpArrow.style.borderBottom = "40px solid lightgrey";
-  p2DownArrow.style.borderTop = "40px solid lightgrey";
-  p2RightArrow.style.borderLeft = "40px solid lightgrey";
+//
+//-- score --//
+const scoreMultiplier = {
+  perfect: 2,
+  good: 1,
+  bad: 0.5,
+  missed: 0,
+  // combo30: 1.05,
+  // combo60: 1.10,
 };
 
 //
 //--------------------------------------------------------------//
-// attacks
+// call function
 //--------------------------------------------------------------//
 
-//== call function==//
 // keyDownDetection();
 playGame();
 // newGame();

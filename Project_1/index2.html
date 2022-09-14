@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="style.css" rel="stylesheet" />
-    <title>Document</title>
+    <title>Tug-of-War</title>
   </head>
   <body>
     <!-- start of top section parent container -->
@@ -24,25 +24,30 @@
     <!-- start of mid section parent container -->
     <div class="flex" id="middle">
       <div class="box left" id="mid-left">
-        <div class="box" id="player1-side">player1 blank</div>
+        <div class="box" id="player1-side"></div>
       </div>
       <div class="box center" id="mid-center">
         <!-- start of health bar container -->
         <div id="health-bar-main-container">
           <div id="health-bar-container">
-            <progress id="hpProgress" value="50" min="0" max="100"></progress>
+            <progress id="hp-progress" value="50" min="0" max="100"></progress>
           </div>
         </div>
         <!-- end of health bar container -->
+
         <div id="players-container">
-          Players Container
-          <div id="player1">1</div>
+          <div id="display-result"></div>
+          <div id="player1">
+            <img src="../image/man_side.gif" width="200px" height="200px" />
+          </div>
           <div id="rope"></div>
-          <div id="player2">2</div>
+          <div id="player2">
+            <img src="../image/man_side.gif" width="200px" height="200px" />
+          </div>
         </div>
       </div>
       <div class="box right" id="mid-right">
-        <div class="box" id="player2-side">player2 blank</div>
+        <div class="box" id="player2-side"></div>
       </div>
     </div>
 
