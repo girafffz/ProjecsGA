@@ -24,19 +24,26 @@ let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequenc
 const startButton = document.querySelector("#start-btn");
 const timer = document.querySelector("#timer");
 
-const leftArrow = document.querySelector(".left-arrow");
-const upArrow = document.querySelector(".up-arrow");
-const downArrow = document.querySelector(".down-arrow");
-const rightArrow = document.querySelector(".right-arrow");
+// const leftArrow = document.querySelector(".left-arrow");
+// const upArrow = document.querySelector(".up-arrow");
+// const downArrow = document.querySelector(".down-arrow");
+// const rightArrow = document.querySelector(".right-arrow");
 
 const healthBar = document.querySelector("#hpProgress");
 
 // -- player 1 -- //
 const p1ScoreBoard = document.querySelector("#player1-score");
+const p1LeftArrow = document.querySelector("#left-p1");
+const p1UpArrow = document.querySelector("#up-p1");
+const p1DownArrow = document.querySelector("#down-p1");
+const p1RightArrow = document.querySelector("#right-p1");
 
 // -- player 2 -- //
 const p2ScoreBoard = document.querySelector("#player2-score");
-// const p2HealthBar = document.querySelector("#player2-health-bar");
+const p2LeftArrow = document.querySelector("#left-p2");
+const p2UpArrow = document.querySelector("#up-p2");
+const p2DownArrow = document.querySelector("#down-p2");
+const p2RightArrow = document.querySelector("#right-p2");
 
 //
 //--------------------------------------------------------------//
@@ -151,9 +158,9 @@ function randomExecutor() {
 }
 
 let arrowIndicator = 0;
-let arrowIndicatorP2 = 0;
-let arrowTime;
-let p1KeydownTime;
+// let arrowIndicatorP2 = 0;
+// let arrowTime;
+// let p1KeydownTime;
 
 function randomArrowIndicator() {
   arrowIndicator = Math.floor(Math.random() * arrowArray.length);
@@ -245,39 +252,69 @@ window.addEventListener("keydown", (e) => {
 });
 
 const arrowLeft = () => {
-  leftArrow.style.borderRight = "40px solid yellow";
-  upArrow.style.borderBottom = "40px solid lightgrey";
-  downArrow.style.borderTop = "40px solid lightgrey";
-  rightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "40px solid yellow";
+  p1UpArrow.style.borderBottom = "40px solid lightgrey";
+  p1DownArrow.style.borderTop = "40px solid lightgrey";
+  p1RightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "40px solid yellow";
+  p2UpArrow.style.borderBottom = "40px solid lightgrey";
+  p2DownArrow.style.borderTop = "40px solid lightgrey";
+  p2RightArrow.style.borderLeft = "40px solid lightgrey";
 };
 
 const arrowUp = () => {
-  leftArrow.style.borderRight = "40px solid lightgrey";
-  upArrow.style.borderBottom = "40px solid yellow";
-  downArrow.style.borderTop = "40px solid lightgrey";
-  rightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "40px solid lightgrey";
+  p1UpArrow.style.borderBottom = "40px solid yellow";
+  p1DownArrow.style.borderTop = "40px solid lightgrey";
+  p1RightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "40px solid lightgrey";
+  p2UpArrow.style.borderBottom = "40px solid yellow";
+  p2DownArrow.style.borderTop = "40px solid lightgrey";
+  p2RightArrow.style.borderLeft = "40px solid lightgrey";
 };
 
 const arrowDown = () => {
-  leftArrow.style.borderRight = "40px solid lightgrey";
-  upArrow.style.borderBottom = "40px solid lightgrey";
-  downArrow.style.borderTop = "40px solid yellow";
-  rightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "40px solid lightgrey";
+  p1UpArrow.style.borderBottom = "40px solid lightgrey";
+  p1DownArrow.style.borderTop = "40px solid yellow";
+  p1RightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "40px solid lightgrey";
+  p2UpArrow.style.borderBottom = "40px solid lightgrey";
+  p2DownArrow.style.borderTop = "40px solid yellow";
+  p2RightArrow.style.borderLeft = "40px solid lightgrey";
 };
 
 const arrowRight = () => {
-  leftArrow.style.borderRight = "40px solid lightgrey";
-  upArrow.style.borderBottom = "40px solid lightgrey";
-  downArrow.style.borderTop = "40px solid lightgrey";
-  rightArrow.style.borderLeft = "40px solid yellow";
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "40px solid lightgrey";
+  p1UpArrow.style.borderBottom = "40px solid lightgrey";
+  p1DownArrow.style.borderTop = "40px solid lightgrey";
+  p1RightArrow.style.borderLeft = "40px solid yellow";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "40px solid lightgrey";
+  p2UpArrow.style.borderBottom = "40px solid lightgrey";
+  p2DownArrow.style.borderTop = "40px solid lightgrey";
+  p2RightArrow.style.borderLeft = "40px solid yellow";
 };
 
 const clearRound = () => {
   console.log(`colors reset`);
-  leftArrow.style.borderRight = "40px solid lightgrey";
-  upArrow.style.borderBottom = "40px solid lightgrey";
-  downArrow.style.borderTop = "40px solid lightgrey";
-  rightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p1 arrows --//
+  p1LeftArrow.style.borderRight = "40px solid lightgrey";
+  p1UpArrow.style.borderBottom = "40px solid lightgrey";
+  p1DownArrow.style.borderTop = "40px solid lightgrey";
+  p1RightArrow.style.borderLeft = "40px solid lightgrey";
+  //-- p2 arrows --//
+  p2LeftArrow.style.borderRight = "40px solid lightgrey";
+  p2UpArrow.style.borderBottom = "40px solid lightgrey";
+  p2DownArrow.style.borderTop = "40px solid lightgrey";
+  p2RightArrow.style.borderLeft = "40px solid lightgrey";
 };
 
 //

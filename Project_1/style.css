@@ -212,7 +212,7 @@ progress::-webkit-progress-value {
   align-items: flex-end;
 }
 
-#left,
+#left-p1,
 #left-p2 {
   width: 0;
   height: 0;
@@ -229,7 +229,7 @@ progress::-webkit-progress-value {
   border-bottom: 25px solid transparent;
 } */
 
-#up,
+#up-p1,
 #up-p2 {
   width: 0;
   height: 0;
@@ -246,7 +246,7 @@ progress::-webkit-progress-value {
   border-bottom: 40px solid black;
 } */
 
-#down,
+#down-p1,
 #down-p2 {
   width: 0;
   height: 0;
@@ -263,7 +263,7 @@ progress::-webkit-progress-value {
   border-top: 40px solid black;
 } */
 
-#right,
+#right-p1,
 #right-p2 {
   width: 0;
   height: 0;
