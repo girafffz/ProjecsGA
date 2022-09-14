@@ -29,11 +29,14 @@ const upArrow = document.querySelector(".up-arrow");
 const downArrow = document.querySelector(".down-arrow");
 const rightArrow = document.querySelector(".right-arrow");
 
+const healthBar = document.querySelector("#hpProgress");
+
 // -- player 1 -- //
 const p1ScoreBoard = document.querySelector("#player1-score");
 
 // -- player 2 -- //
 const p2ScoreBoard = document.querySelector("#player2-score");
+// const p2HealthBar = document.querySelector("#player2-health-bar");
 
 //
 //--------------------------------------------------------------//
@@ -42,7 +45,7 @@ const p2ScoreBoard = document.querySelector("#player2-score");
 class Player {
   constructor(
     name = "",
-    health = 60, // will be attacked by opponent's no. of hits except missed
+    health = 50, // will be attacked by opponent's no. of hits except missed
     score = 0,
     hits = { perfect: 0, good: 0, bad: 0, missed: 0 } // total = 60
   ) {
@@ -66,6 +69,16 @@ class Player {
 
   scoreUp() {
     this.score++;
+  }
+
+  healthUp() {
+    this.health++;
+    healthBar.value = p1.health;
+  }
+
+  healthDown() {
+    this.health--;
+    healthBar.value = p1.health;
   }
 
   resetHits() {
@@ -92,7 +105,7 @@ const scoreMultiplier = {
   // combo60: 1.10,
 };
 
-const p1 = new Player("Player 1");
+const p1 = new Player("Player 1", undefined, undefined, undefined);
 const p2 = new Player("Player 2");
 
 function playGame() {
@@ -170,23 +183,27 @@ window.addEventListener("keydown", (e) => {
     }
 
     // only want the following (p1) keys to be detected
-    // part 2: add p2 keys
+
     if (e.key === "a" || e.key === "w" || e.key === "s" || e.key === "d") {
       if (arrowIndicator === 0 && e.key === "a") {
         console.log("hitting");
-        console.log({ p1 });
+        // console.log({ p1 });
         p1.hits.good++;
-        console.log({ p1 });
+        // console.log({ p1 });
         p1.scoreUp();
+        p1.healthUp();
       } else if (arrowIndicator === 1 && e.key === "w") {
         p1.hits.good++;
         p1.scoreUp();
+        p1.healthUp();
       } else if (arrowIndicator === 2 && e.key === "s") {
         p1.hits.good++;
         p1.scoreUp();
+        p1.healthUp();
       } else if (arrowIndicator === 3 && e.key === "d") {
         p1.hits.good++;
         p1.scoreUp();
+        p1.healthUp();
       } else {
         p1.hits.missed++;
       }
@@ -204,21 +221,25 @@ window.addEventListener("keydown", (e) => {
       if (arrowIndicator === 0 && e.key === "ArrowLeft") {
         p2.hits.good++;
         p2.scoreUp();
+        p1.healthDown();
       } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
         p2.hits.good++;
         p2.scoreUp();
+        p1.healthDown();
       } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
         p2.hits.good++;
         p2.scoreUp();
+        p1.healthDown();
       } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
         p2.hits.good++;
         p2.scoreUp();
+        p1.healthDown();
       } else {
         p2.hits.missed++;
       }
     }
-    console.log(p2.hits);
-    console.log({ score: p2.score });
+    // console.log(p2.hits);
+    // console.log({ score: p2.score });
     p2ScoreBoard.innerText = p2.score;
   }
 });
@@ -258,6 +279,11 @@ const clearRound = () => {
   downArrow.style.borderTop = "40px solid lightgrey";
   rightArrow.style.borderLeft = "40px solid lightgrey";
 };
+
+//
+//--------------------------------------------------------------//
+// attacks
+//--------------------------------------------------------------//
 
 //== call function==//
 // keyDownDetection();

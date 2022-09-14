@@ -27,25 +27,18 @@
         <div class="box" id="player1-side">player1 blank</div>
       </div>
       <div class="box center" id="mid-center">
-        <div class="box" id="stage">
-          <!-- start of health bar container -->
-          <div id="health-bar-main-container">
-            <div id="health-bar-container">
-              <!-- player 1 health -->
-              <div class="health-bar" id="player1-health-bar">health bar</div>
-              <!-- red box/timer -->
-              <div id="red-indicator"></div>
-              <!-- player 2 health -->
-              <div class="health-bar" id="player2-health-bar"></div>
-            </div>
+        <!-- start of health bar container -->
+        <div id="health-bar-main-container">
+          <div id="health-bar-container">
+            <progress id="hpProgress" value="50" min="0" max="100"></progress>
           </div>
-          <!-- end of health bar container -->
-          <div id="players-container">
-            Players Container
-            <div id="player1">1</div>
-            <div id="rope"></div>
-            <div id="player2">2</div>
-          </div>
+        </div>
+        <!-- end of health bar container -->
+        <div id="players-container">
+          Players Container
+          <div id="player1">1</div>
+          <div id="rope"></div>
+          <div id="player2">2</div>
         </div>
       </div>
       <div class="box right" id="mid-right">
@@ -78,12 +71,10 @@
       </div>
     </div>
 
-    <div class="footer">
-      <p>created by: stephanie luo</p>
-      <p>image by upklyak on Freepik</p>
-
-      <!-- script -->
-      <script src="script_p1.js" charset="UTF-8"></script>
+    <div class="box footer">
+      <p>created by: stephanie luo<br />image by upklyak on Freepik</p>
     </div>
+    <!-- script -->
+    <script src="script_p1.js" charset="UTF-8"></script>
   </body>
 </html>

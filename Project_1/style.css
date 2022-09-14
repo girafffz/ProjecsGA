@@ -17,9 +17,9 @@ body {
 }
 
 .box {
-  flex-grow: 0;
-  display: flex;
-  align-items: center;
+  /* flex-grow: 0; */
+  /* display: flex; */
+  /* align-items: center; */
   border: 1px solid pink;
 }
 
@@ -49,10 +49,15 @@ body {
   height: 52px;
 }
 
+/* #bottom-center {
+  display: flex;
+} */
+
 #start-btn {
   background-color: darkgrey;
   border-radius: 3px;
   cursor: pointer;
+  /* position: absolute; */
   width: 100px;
   height: 40px;
 }
@@ -62,6 +67,10 @@ body {
   transition: 0.7s;
 }
 
+/* #top-center {
+  position: relative;
+} */
+
 #timer {
   border: 1px solid white;
   width: 120px;
@@ -69,6 +78,7 @@ body {
   font-size: 4.5em;
   color: white;
   padding: 5px;
+  display: inline-block;
 }
 
 .score-board {
@@ -84,9 +94,75 @@ body {
   align-self: center;
 }
 
-#players-container {
+#mid-center {
+  display: flex;
   position: relative;
-  background-color: azure;
+}
+
+#health-bar-main-container {
+  position: relative;
+  display: inline-block;
+  width: 636px;
+}
+
+#health-bar-container {
+  position: absolute;
+  width: 100%;
+  align-items: center;
+  top: 20px;
+}
+
+/* .health-bar {
+  background-color: yellow;
+  width: 100%;
+  height: 30px;
+}
+
+#red-indicator {
+  background-color: red;
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+} */
+
+/* #myProgress {
+  width: 100%;
+  background-color: grey;
+} */
+
+/* #myBar {
+  height: 30px;
+  background-color: green;
+} */
+
+#hpProgress {
+  border-radius: 1px;
+  height: 30px;
+  width: 100%;
+  /* color: #0b2245; */
+  /* box-shadow: 1px 1px 4px rgba(0, 0, 0, 0); */
+}
+
+progress::-webkit-progress-bar {
+  background-color: slateblue;
+  border-radius: 5px;
+  /* width: 636px;
+  height: 30px; */
+}
+progress::-webkit-progress-value {
+  background-color: darkgoldenrod;
+  /* border-right: 3px solid red; */
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+  /* box-shadow: 1px 1px 5px 3px #0b2245; */
+}
+
+#players-container {
+  background-color: rgba(255, 255, 255, 0.3);
+  position: absolute;
+  width: 636px;
+  height: 350px;
+  bottom: 0;
 }
 
 #player1 {
@@ -103,7 +179,7 @@ body {
   height: 150px;
   background-color: slateblue;
   position: absolute;
-  margin-top: 115px;
+  margin-top: 120px;
   margin-left: 510px;
 }
 
@@ -206,5 +282,9 @@ body {
 
 .footer {
   background-color: rgba(255, 255, 255, 0.25);
-  padding: 5px;
+}
+
+p {
+  font-size: smaller;
+  text-align: center;
 }
