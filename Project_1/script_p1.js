@@ -11,7 +11,6 @@ let gameOver = false;
 let score = 0;
 let timer = 30;
 let timerId;
-let sound;
 let flash;
 let interval;
 let arrowIndicator = 0;
@@ -23,7 +22,7 @@ let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequenc
 //--------------------------------------------------------------//
 const startButton = document.querySelector("#start-btn");
 const clock = document.querySelector("#timer");
-const strengthBar = document.querySelector("#strength-progress");
+const healthBar = document.querySelector("#health-progress");
 const result = document.querySelector("#display-result");
 
 // -- player 1 -- //
@@ -70,12 +69,12 @@ const cheerSound = new Audio(
 class Player {
   constructor(
     name = "",
-    strength = 50, // will be determined by opponent's no. of hits and misses
+    health = 30, // will be determined by opponent's no. of hits and misses
     score = 0,
-    hits = { perfect: 0, good: 0, bad: 0, missed: 0 }
+    hits = 0
   ) {
     this.name = name;
-    this.strength = strength;
+    this.health = health;
     this.score = score;
     this.hits = hits;
   }
@@ -84,21 +83,18 @@ class Player {
     this.score++;
   }
 
-  strengthUp() {
-    this.strength++;
-    strengthBar.value = p1.strength;
+  healthUp() {
+    this.health++;
+    healthBar.value = this.health;
   }
 
-  strengthDown() {
-    this.strength--;
-    strengthBar.value = p1.strength;
+  healthDown() {
+    this.health--;
+    healthBar.value = this.health;
   }
 
   resetHits() {
-    this.hits.perfect = 0;
-    this.hits.good = 0;
-    this.hits.bad = 0;
-    this.hits.missed = 0;
+    this.hits = 0;
   }
 }
 
@@ -140,21 +136,22 @@ function finishGame() {
   gameOver = true;
   win();
   startButton.innerText = "Restart";
+  clock.innerText = "Game Over";
 }
 
 // function for clearing a game
 const clearRound = () => {
   console.log(`colors reset`);
   //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "65px solid lightgrey";
-  p1UpArrow.style.borderBottom = "65px solid lightgrey";
-  p1DownArrow.style.borderTop = "65px solid lightgrey";
-  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  p1LeftArrow.style.borderRightColor = "lightgrey";
+  p1UpArrow.style.borderBottomColor = "lightgrey";
+  p1DownArrow.style.borderTopColor = "lightgrey";
+  p1RightArrow.style.borderLeftColor = "lightgrey";
   //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "65px solid lightgrey";
-  p2UpArrow.style.borderBottom = "65px solid lightgrey";
-  p2DownArrow.style.borderTop = "65px solid lightgrey";
-  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  p2LeftArrow.style.borderRightColor = "lightgrey";
+  p2UpArrow.style.borderBottomColor = "lightgrey";
+  p2DownArrow.style.borderTopColor = "lightgrey";
+  p2RightArrow.style.borderLeftColor = "lightgrey";
   //-- hiding results --//
   result.style.display = "none";
 };
@@ -163,7 +160,7 @@ const clearRound = () => {
 function resetAll() {
   p1.resetHits();
   p1.score = 0;
-  strengthBar.value = 50;
+  healthBar.value = 30;
   p1ScoreBoard.innerText = 0;
   p2.resetHits();
   p2.score = 0;
@@ -176,14 +173,14 @@ function resetAll() {
 function win() {
   if (gameOver === true) {
     result.style.display = "block"; // display result
-    if (p1.score > p2.score) {
-      result.innerText = "Game Over\nPlayer 1 Wins!";
+    if (p1.health > p2.health) {
+      result.innerText = "Player 1 Wins!";
       cheerSound.play();
-    } else if (p1.score < p2.score) {
-      result.innerText = "Game Over\nPlayer 2 Wins!";
+    } else if (p1.health < p2.health) {
+      result.innerText = "Player 2 Wins!";
       cheerSound.play();
     } else {
-      result.innerText = "Game Over\nIt is a draw!";
+      result.innerText = "It is a draw!";
       cheerSound.play();
     }
   }
@@ -208,7 +205,7 @@ function countDownTimer() {
 
 // function to run random arrow indicator at set intervals
 function randomExecutor() {
-  interval = setInterval(randomArrowIndicator, 500); // to change the speed
+  interval = setInterval(randomArrowIndicator, 1000); // to change the speed
 }
 
 // function to determine which arrows will change colors
@@ -231,60 +228,60 @@ function randomArrowIndicator() {
 
 const arrowLeft = () => {
   //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "65px solid yellow";
-  p1UpArrow.style.borderBottom = "65px solid lightgrey";
-  p1DownArrow.style.borderTop = "65px solid lightgrey";
-  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  p1LeftArrow.style.borderRightColor = "yellow";
+  p1UpArrow.style.borderBottomColor = "lightgrey";
+  p1DownArrow.style.borderTopColor = "lightgrey";
+  p1RightArrow.style.borderLeftColor = "lightgrey";
   //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "65px solid yellow";
-  p2UpArrow.style.borderBottom = "65px solid lightgrey";
-  p2DownArrow.style.borderTop = "65px solid lightgrey";
-  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  p2LeftArrow.style.borderRightColor = "yellow";
+  p2UpArrow.style.borderBottomColor = "lightgrey";
+  p2DownArrow.style.borderTopColor = "lightgrey";
+  p2RightArrow.style.borderLeftColor = "lightgrey";
   //-- sound --//
   leftSound.play();
 };
 
 const arrowUp = () => {
   //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "65px solid lightgrey";
-  p1UpArrow.style.borderBottom = "65px solid yellow";
-  p1DownArrow.style.borderTop = "65px solid lightgrey";
-  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  p1LeftArrow.style.borderRightColor = "lightgrey";
+  p1UpArrow.style.borderBottomColor = "yellow";
+  p1DownArrow.style.borderTopColor = "lightgrey";
+  p1RightArrow.style.borderLeftColor = "lightgrey";
   //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "65px solid lightgrey";
-  p2UpArrow.style.borderBottom = "65px solid yellow";
-  p2DownArrow.style.borderTop = "65px solid lightgrey";
-  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  p2LeftArrow.style.borderRightColor = "lightgrey";
+  p2UpArrow.style.borderBottomColor = "yellow";
+  p2DownArrow.style.borderTopColor = "lightgrey";
+  p2RightArrow.style.borderLeftColor = "lightgrey";
   //-- sound --//
   upSound.play();
 };
 
 const arrowDown = () => {
   //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "65px solid lightgrey";
-  p1UpArrow.style.borderBottom = "65px solid lightgrey";
-  p1DownArrow.style.borderTop = "65px solid yellow";
-  p1RightArrow.style.borderLeft = "65px solid lightgrey";
+  p1LeftArrow.style.borderRightColor = "lightgrey";
+  p1UpArrow.style.borderBottomColor = "lightgrey";
+  p1DownArrow.style.borderTopColor = "yellow";
+  p1RightArrow.style.borderLeftColor = "lightgrey";
   //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "65px solid lightgrey";
-  p2UpArrow.style.borderBottom = "65px solid lightgrey";
-  p2DownArrow.style.borderTop = "65px solid yellow";
-  p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  p2LeftArrow.style.borderRightColor = "lightgrey";
+  p2UpArrow.style.borderBottomColor = "lightgrey";
+  p2DownArrow.style.borderTopColor = "yellow";
+  p2RightArrow.style.borderLeftColor = "lightgrey";
   //-- sound --//
   downSound.play();
 };
 
 const arrowRight = () => {
   //-- p1 arrows --//
-  p1LeftArrow.style.borderRight = "65px solid lightgrey";
-  p1UpArrow.style.borderBottom = "65px solid lightgrey";
-  p1DownArrow.style.borderTop = "65px solid lightgrey";
-  p1RightArrow.style.borderLeft = "65px solid yellow";
+  p1LeftArrow.style.borderRightColor = "lightgrey";
+  p1UpArrow.style.borderBottomColor = "lightgrey";
+  p1DownArrow.style.borderTopColor = "lightgrey";
+  p1RightArrow.style.borderLeftColor = "yellow";
   //-- p2 arrows --//
-  p2LeftArrow.style.borderRight = "65px solid lightgrey";
-  p2UpArrow.style.borderBottom = "65px solid lightgrey";
-  p2DownArrow.style.borderTop = "65px solid lightgrey";
-  p2RightArrow.style.borderLeft = "65px solid yellow";
+  p2LeftArrow.style.borderRightColor = "lightgrey";
+  p2UpArrow.style.borderBottomColor = "lightgrey";
+  p2DownArrow.style.borderTopColor = "lightgrey";
+  p2RightArrow.style.borderLeftColor = "yellow";
   //-- sound --//
   rightSound.play();
 };
@@ -292,42 +289,33 @@ const arrowRight = () => {
 // listening for keydown event for specific keys
 window.addEventListener("keydown", (e) => {
   if (start === true) {
-    console.log({
-      key: e.key,
-      arrowIndicator,
-      bool: arrowIndicator === 0 && e.key === "ArrowLeft",
-    });
     // prevent repeated keystrokes
     if (e.repeat) {
       return;
     }
 
     // only want the following (p1) keys to be detected
-
+    // for player 1
     if (e.key === "a" || e.key === "w" || e.key === "s" || e.key === "d") {
       if (arrowIndicator === 0 && e.key === "a") {
-        p1.hits.good++;
-        p1.scoreUp();
-        p1.strengthUp();
+        p1GoodHits();
+        p1LeftArrow.style.borderRightColor = "green";
       } else if (arrowIndicator === 1 && e.key === "w") {
-        p1.hits.good++;
-        p1.scoreUp();
-        p1.strengthUp();
+        p1GoodHits();
+        p1UpArrow.style.borderBottomColor = "green";
       } else if (arrowIndicator === 2 && e.key === "s") {
-        p1.hits.good++;
-        p1.scoreUp();
-        p1.strengthUp();
+        p1GoodHits();
+        p1DownArrow.style.borderTopColor = "green";
       } else if (arrowIndicator === 3 && e.key === "d") {
-        p1.hits.good++;
-        p1.scoreUp();
-        p1.strengthUp();
+        p1GoodHits();
+        p1RightArrow.style.borderLeftColor = "green";
       } else {
-        p1.hits.missed++;
-        p2.strengthUp();
+        p1MissedHits();
       }
     }
-
     p1ScoreBoard.innerText = p1.score;
+
+    // for player 2
     if (
       e.key === "ArrowLeft" ||
       e.key === "ArrowUp" ||
@@ -335,40 +323,52 @@ window.addEventListener("keydown", (e) => {
       e.key === "ArrowRight"
     ) {
       if (arrowIndicator === 0 && e.key === "ArrowLeft") {
-        p2.hits.good++;
-        p2.scoreUp();
-        p1.strengthDown();
+        p2GoodHits();
+        p2LeftArrow.style.borderRightColor = "green";
       } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
-        p2.hits.good++;
-        p2.scoreUp();
-        p1.strengthDown();
+        p2GoodHits();
+        p2UpArrow.style.borderBottomColor = "green";
       } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
-        p2.hits.good++;
-        p2.scoreUp();
-        p1.strengthDown();
+        p2GoodHits();
+        p2DownArrow.style.borderTopColor = "green";
       } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
-        p2.hits.good++;
-        p2.scoreUp();
-        p1.strengthDown();
+        p2GoodHits();
+        p2RightArrow.style.borderLeftColor = "green";
       } else {
-        p2.hits.missed++;
-        p1.strengthUp();
+        p2MissedHits();
       }
     }
     p2ScoreBoard.innerText = p2.score;
   }
 });
 
-// -- score multiplier (kiv) --//
-//
-// const scoreMultiplier = {
-//   perfect: 2,
-//   good: 1,
-//   bad: 0.5,
-//   missed: 0,
-//   combo30: 1.05,
-//   combo60: 1.10,
-// };
+function p1GoodHits() {
+  p1.hits++;
+  p1.scoreUp();
+  p1.healthUp();
+  p2.healthDown();
+}
+
+function p1MissedHits() {
+  p1LeftArrow.style.borderRightColor = "red";
+  p1UpArrow.style.borderBottomColor = "red";
+  p1DownArrow.style.borderTopColor = "red";
+  p1RightArrow.style.borderLeftColor = "red";
+}
+
+function p2GoodHits() {
+  p2.hits++;
+  p2.scoreUp();
+  p2.healthUp();
+  p1.healthDown();
+}
+
+function p2MissedHits() {
+  p2LeftArrow.style.borderRightColor = "red";
+  p2UpArrow.style.borderBottomColor = "red";
+  p2DownArrow.style.borderTopColor = "red";
+  p2RightArrow.style.borderLeftColor = "red";
+}
 
 //
 //--------------------------------------------------------------//
