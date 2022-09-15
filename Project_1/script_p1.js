@@ -24,8 +24,10 @@ const startButton = document.querySelector("#start-btn");
 const clock = document.querySelector("#timer");
 const healthBar = document.querySelector("#health-progress");
 const result = document.querySelector("#display-result");
+const ropeImage = document.querySelector("#rope");
 
 // -- player 1 -- //
+const p1Image = document.querySelector("#p1-image");
 const p1ScoreBoard = document.querySelector("#player1-score");
 const p1LeftArrow = document.querySelector("#left-p1");
 const p1UpArrow = document.querySelector("#up-p1");
@@ -33,6 +35,7 @@ const p1DownArrow = document.querySelector("#down-p1");
 const p1RightArrow = document.querySelector("#right-p1");
 
 // -- player 2 -- //
+const p2Image = document.querySelector("#p2-image");
 const p2ScoreBoard = document.querySelector("#player2-score");
 const p2LeftArrow = document.querySelector("#left-p2");
 const p2UpArrow = document.querySelector("#up-p2");
@@ -55,9 +58,7 @@ const downSound = new Audio(
 const rightSound = new Audio(
   "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"
 );
-const scream = new Audio(
-  "http://soundbible.com/mp3/Female_Scream_Horror-NeoPhyTe-138499973.mp3"
-);
+const awwSound = new Audio("media/aww_sound_effect.mp3");
 const cheerSound = new Audio(
   "http://soundbible.com/mp3/Kids%20Cheering-SoundBible.com-681813822.mp3"
 );
@@ -85,12 +86,16 @@ class Player {
 
   healthUp() {
     this.health++;
-    healthBar.value = this.health;
+    healthBar.value = p1.health;
   }
 
   healthDown() {
     this.health--;
-    healthBar.value = this.health;
+    healthBar.value = p1.health;
+  }
+
+  hitsUp() {
+    this.hits++;
   }
 
   resetHits() {
@@ -111,7 +116,6 @@ function playGame() {
   startButton.addEventListener("click", (e) => {
     start = true;
     gameOver = false;
-    // console.log(start);
     newGame();
   });
 }
@@ -119,7 +123,6 @@ function playGame() {
 // function for each new game
 function newGame() {
   if (start === true) {
-    // console.log(`new game starting`);
     clearRound();
     resetAll();
     randomExecutor();
@@ -160,11 +163,18 @@ const clearRound = () => {
 function resetAll() {
   p1.resetHits();
   p1.score = 0;
+  p1.health = 30;
   healthBar.value = 30;
   p1ScoreBoard.innerText = 0;
+  p1Image.style.display = "block";
+  p1Image.src = "../image/man_side.gif";
+  ropeImage.style.display = "block";
   p2.resetHits();
   p2.score = 0;
+  p2.health = 30;
   p2ScoreBoard.innerText = 0;
+  p2Image.style.display = "block";
+  p2Image.src = "../image/man_side.gif";
   timer = 30;
 }
 
@@ -173,15 +183,22 @@ function resetAll() {
 function win() {
   if (gameOver === true) {
     result.style.display = "block"; // display result
+    ropeImage.style.display = "none";
     if (p1.health > p2.health) {
       result.innerText = "Player 1 Wins!";
+      p1Image.src = "../image/man_jumping.gif";
+      p2Image.style.display = "none";
       cheerSound.play();
     } else if (p1.health < p2.health) {
       result.innerText = "Player 2 Wins!";
+      p2Image.src = "../image/man_jumping.gif";
+      p1Image.style.display = "none";
       cheerSound.play();
     } else {
       result.innerText = "It is a draw!";
-      cheerSound.play();
+      p1Image.src = "../image/man_sighing.gif";
+      p2Image.src = "../image/man_sighing.gif";
+      awwSound.play();
     }
   }
 }
@@ -343,7 +360,7 @@ window.addEventListener("keydown", (e) => {
 });
 
 function p1GoodHits() {
-  p1.hits++;
+  p1.hitsUp();
   p1.scoreUp();
   p1.healthUp();
   p2.healthDown();
@@ -357,7 +374,7 @@ function p1MissedHits() {
 }
 
 function p2GoodHits() {
-  p2.hits++;
+  p2.hitsUp();
   p2.scoreUp();
   p2.healthUp();
   p1.healthDown();
