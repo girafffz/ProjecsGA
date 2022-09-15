@@ -132,7 +132,7 @@ body {
 progress {
   border-radius: 1px;
   height: 45px;
-  width: 100%;
+  width: 90%;
 }
 
 progress::-webkit-progress-bar {
