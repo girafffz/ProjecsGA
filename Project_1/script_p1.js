@@ -8,10 +8,9 @@ console.log("Welcome to Tug-of-War");
 //--------------------------------------------------------------//
 let start = false;
 let gameOver = false;
-let countDownTimer; // need to show?
 let score = 0;
-// let combo = 0; // later
-// let maxCombo = 0; // later
+let timer = 30;
+let timerId;
 let sound;
 let flash;
 let interval;
@@ -23,8 +22,8 @@ let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequenc
 // setting up querySelectors as variables
 //--------------------------------------------------------------//
 const startButton = document.querySelector("#start-btn");
-const timer = document.querySelector("#timer");
-const healthBar = document.querySelector("#hp-progress");
+const clock = document.querySelector("#timer");
+const strengthBar = document.querySelector("#strength-progress");
 const result = document.querySelector("#display-result");
 
 // -- player 1 -- //
@@ -43,45 +42,56 @@ const p2RightArrow = document.querySelector("#right-p2");
 
 //
 //--------------------------------------------------------------//
+// setting up sound files
+//--------------------------------------------------------------//
+const leftSound = new Audio(
+  "https://s3.amazonaws.com/freecodecamp/simonSound1.mp3"
+);
+const upSound = new Audio(
+  "https://s3.amazonaws.com/freecodecamp/simonSound2.mp3"
+);
+const downSound = new Audio(
+  "https://s3.amazonaws.com/freecodecamp/simonSound3.mp3"
+);
+const rightSound = new Audio(
+  "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"
+);
+const scream = new Audio(
+  "http://soundbible.com/mp3/Female_Scream_Horror-NeoPhyTe-138499973.mp3"
+);
+const cheerSound = new Audio(
+  "http://soundbible.com/mp3/Kids%20Cheering-SoundBible.com-681813822.mp3"
+);
+
+//
+//--------------------------------------------------------------//
 // for generating players
 //--------------------------------------------------------------//
 class Player {
   constructor(
     name = "",
-    health = 50, // will be attacked by opponent's no. of hits except missed
+    strength = 50, // will be determined by opponent's no. of hits and misses
     score = 0,
-    hits = { perfect: 0, good: 0, bad: 0, missed: 0 } // total = 60
+    hits = { perfect: 0, good: 0, bad: 0, missed: 0 }
   ) {
     this.name = name;
-    this.health = health; // health - count of missed hits
-    this.score = score; // hit * scoreMultiplier
+    this.strength = strength;
+    this.score = score;
     this.hits = hits;
-  }
-
-  getName() {
-    this.name;
-  }
-
-  getHealth() {
-    this.health;
-  }
-
-  getScore() {
-    this.score;
   }
 
   scoreUp() {
     this.score++;
   }
 
-  healthUp() {
-    this.health++;
-    healthBar.value = p1.health;
+  strengthUp() {
+    this.strength++;
+    strengthBar.value = p1.strength;
   }
 
-  healthDown() {
-    this.health--;
-    healthBar.value = p1.health;
+  strengthDown() {
+    this.strength--;
+    strengthBar.value = p1.strength;
   }
 
   resetHits() {
@@ -90,13 +100,6 @@ class Player {
     this.hits.bad = 0;
     this.hits.missed = 0;
   }
-
-  //   hitUp() {
-  //     if (perfect) this.hits.perfect += 1;
-  //     if (good) this.hits.good += 1;
-  //     if (bad) this.hits.bad += 1;
-  //     if (missed) this.hits.missed += 1;
-  //   }
 }
 
 const p1 = new Player("Player 1", undefined, undefined, undefined);
@@ -112,7 +115,7 @@ function playGame() {
   startButton.addEventListener("click", (e) => {
     start = true;
     gameOver = false;
-    console.log(start);
+    // console.log(start);
     newGame();
   });
 }
@@ -120,21 +123,23 @@ function playGame() {
 // function for each new game
 function newGame() {
   if (start === true) {
-    console.log(`new game starting`);
+    // console.log(`new game starting`);
     clearRound();
     resetAll();
     randomExecutor();
-    setTimeout(finishGame, 6000); // to change the timing
+    countDownTimer();
+    setTimeout(finishGame, 30000); // to change the timing
   }
 }
 
 // function for finishing a game
 function finishGame() {
-  console.log(`game over`);
+  // console.log(`game over`);
   clearInterval(interval);
   start = false;
   gameOver = true;
   win();
+  startButton.innerText = "Restart";
 }
 
 // function for clearing a game
@@ -154,31 +159,46 @@ const clearRound = () => {
   result.style.display = "none";
 };
 
-// function for winning
-function win() {
-  if (gameOver === true) {
-    result.style.display = "block";
-
-    if (p1.health > p2.health) {
-      result.innerText = "Game Over\nPlayer 1 Wins!";
-    } else if (p1.health < p2.health) {
-      console.log("Player 2 Wins!");
-      result.innerText = "Game Over\nPlayer 2 Wins!";
-    } else {
-      console.log("It is a draw!");
-      result.innerText = "Game Over\nIt is a draw!";
-    }
-  }
-}
-
 // function to reset scores
 function resetAll() {
   p1.resetHits();
   p1.score = 0;
+  strengthBar.value = 50;
   p1ScoreBoard.innerText = 0;
   p2.resetHits();
   p2.score = 0;
   p2ScoreBoard.innerText = 0;
+  timer = 30;
+}
+
+// function for winning
+// winning will only based on final score after stipulated time
+function win() {
+  if (gameOver === true) {
+    result.style.display = "block"; // display result
+    if (p1.score > p2.score) {
+      result.innerText = "Game Over\nPlayer 1 Wins!";
+      cheerSound.play();
+    } else if (p1.score < p2.score) {
+      result.innerText = "Game Over\nPlayer 2 Wins!";
+      cheerSound.play();
+    } else {
+      result.innerText = "Game Over\nIt is a draw!";
+      cheerSound.play();
+    }
+  }
+}
+
+// function for countdown timer
+// purpose is to show how much time left before the game ends
+function countDownTimer() {
+  if (start === true) {
+    if (timer > 0) {
+      timerId = setTimeout(countDownTimer, 1000);
+      timer--;
+      clock.innerHTML = timer;
+    }
+  }
 }
 
 //
@@ -188,7 +208,7 @@ function resetAll() {
 
 // function to run random arrow indicator at set intervals
 function randomExecutor() {
-  interval = setInterval(randomArrowIndicator, 1000); // to change the speed
+  interval = setInterval(randomArrowIndicator, 500); // to change the speed
 }
 
 // function to determine which arrows will change colors
@@ -220,6 +240,8 @@ const arrowLeft = () => {
   p2UpArrow.style.borderBottom = "65px solid lightgrey";
   p2DownArrow.style.borderTop = "65px solid lightgrey";
   p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- sound --//
+  leftSound.play();
 };
 
 const arrowUp = () => {
@@ -233,6 +255,8 @@ const arrowUp = () => {
   p2UpArrow.style.borderBottom = "65px solid yellow";
   p2DownArrow.style.borderTop = "65px solid lightgrey";
   p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- sound --//
+  upSound.play();
 };
 
 const arrowDown = () => {
@@ -246,6 +270,8 @@ const arrowDown = () => {
   p2UpArrow.style.borderBottom = "65px solid lightgrey";
   p2DownArrow.style.borderTop = "65px solid yellow";
   p2RightArrow.style.borderLeft = "65px solid lightgrey";
+  //-- sound --//
+  downSound.play();
 };
 
 const arrowRight = () => {
@@ -259,6 +285,8 @@ const arrowRight = () => {
   p2UpArrow.style.borderBottom = "65px solid lightgrey";
   p2DownArrow.style.borderTop = "65px solid lightgrey";
   p2RightArrow.style.borderLeft = "65px solid yellow";
+  //-- sound --//
+  rightSound.play();
 };
 
 // listening for keydown event for specific keys
@@ -278,32 +306,28 @@ window.addEventListener("keydown", (e) => {
 
     if (e.key === "a" || e.key === "w" || e.key === "s" || e.key === "d") {
       if (arrowIndicator === 0 && e.key === "a") {
-        console.log("hitting");
-        // console.log({ p1 });
         p1.hits.good++;
-        // console.log({ p1 });
         p1.scoreUp();
-        p1.healthUp();
+        p1.strengthUp();
       } else if (arrowIndicator === 1 && e.key === "w") {
         p1.hits.good++;
         p1.scoreUp();
-        p1.healthUp();
+        p1.strengthUp();
       } else if (arrowIndicator === 2 && e.key === "s") {
         p1.hits.good++;
         p1.scoreUp();
-        p1.healthUp();
+        p1.strengthUp();
       } else if (arrowIndicator === 3 && e.key === "d") {
         p1.hits.good++;
         p1.scoreUp();
-        p1.healthUp();
+        p1.strengthUp();
       } else {
         p1.hits.missed++;
+        p2.strengthUp();
       }
     }
-    // console.log(p1.hits);
-    // console.log({ score: p1.score });
-    p1ScoreBoard.innerText = p1.score; // comparing speed to which the keydown happens and when the arrow first flash
 
+    p1ScoreBoard.innerText = p1.score;
     if (
       e.key === "ArrowLeft" ||
       e.key === "ArrowUp" ||
@@ -313,46 +337,42 @@ window.addEventListener("keydown", (e) => {
       if (arrowIndicator === 0 && e.key === "ArrowLeft") {
         p2.hits.good++;
         p2.scoreUp();
-        p1.healthDown();
+        p1.strengthDown();
       } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
         p2.hits.good++;
         p2.scoreUp();
-        p1.healthDown();
+        p1.strengthDown();
       } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
         p2.hits.good++;
         p2.scoreUp();
-        p1.healthDown();
+        p1.strengthDown();
       } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
         p2.hits.good++;
         p2.scoreUp();
-        p1.healthDown();
+        p1.strengthDown();
       } else {
         p2.hits.missed++;
+        p1.strengthUp();
       }
     }
-    // console.log(p2.hits);
-    // console.log({ score: p2.score });
     p2ScoreBoard.innerText = p2.score;
   }
 });
 
+// -- score multiplier (kiv) --//
 //
-//-- score --//
-const scoreMultiplier = {
-  perfect: 2,
-  good: 1,
-  bad: 0.5,
-  missed: 0,
-  // combo30: 1.05,
-  // combo60: 1.10,
-};
+// const scoreMultiplier = {
+//   perfect: 2,
+//   good: 1,
+//   bad: 0.5,
+//   missed: 0,
+//   combo30: 1.05,
+//   combo60: 1.10,
+// };
 
 //
 //--------------------------------------------------------------//
 // call function
 //--------------------------------------------------------------//
 
-// keyDownDetection();
 playGame();
-// newGame();
-// randomExecutor();
