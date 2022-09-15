@@ -14,7 +14,7 @@
         <div class="box score-board" id="player1-score">Player 1</div>
       </div>
       <div class="box center" id="top-center">
-        <div id="timer">30</div>
+        <div id="timer">Tug-of-War</div>
       </div>
       <div class="box right" id="top-right">
         <div class="box score-board" id="player2-score">Player 2</div>
@@ -27,18 +27,18 @@
         <div class="box" id="player1-side"></div>
       </div>
       <div class="box center" id="mid-center">
-        <!-- start of strength bar container -->
-        <div id="strength-bar-main-container">
-          <div id="strength-bar-container">
+        <!-- start of health bar container -->
+        <div id="health-bar-main-container">
+          <div id="health-bar-container">
             <progress
-              id="strength-progress"
-              value="50"
+              id="health-progress"
+              value="30"
               min="0"
-              max="100"
+              max="60"
             ></progress>
           </div>
         </div>
-        <!-- end of strength bar container -->
+        <!-- end of health bar container -->
         <div id="players-container">
           <div id="display-result"></div>
           <div id="player1">
@@ -64,6 +64,7 @@
           <div class="arrow up-arrow p1-arrow" id="up-p1"></div>
           <div class="arrow down-arrow p1-arrow" id="down-p1"></div>
           <div class="arrow right-arrow p1-arrow" id="right-p1"></div>
+          <div class="instructions">Use AWSD keys</div>
         </div>
       </div>
       <div class="box center" id="bottom-center">
@@ -76,6 +77,7 @@
           <div class="arrow up-arrow p2-arrow" id="up-p2"></div>
           <div class="arrow down-arrow p2-arrow" id="down-p2"></div>
           <div class="arrow right-arrow p2-arrow" id="right-p2"></div>
+          <div class="instructions">Use ARROW keys</div>
         </div>
       </div>
     </div>
