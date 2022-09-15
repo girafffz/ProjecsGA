@@ -17,10 +17,6 @@ body {
   display: flex;
 }
 
-.box {
-  border: 1px solid pink;
-}
-
 .left,
 .right {
   width: 450px;
