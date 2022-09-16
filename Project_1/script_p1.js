@@ -14,7 +14,8 @@ let timerId;
 let flash;
 let interval;
 let arrowIndicator = 0;
-let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"]; // sequence the arrow will flash
+// can add in more variations
+let arrowArray = ["arrowLeft", "arrowUp", "arrowDown", "arrowRight"];
 
 //
 //--------------------------------------------------------------//
@@ -25,6 +26,10 @@ const clock = document.querySelector("#timer");
 const healthBar = document.querySelector("#health-progress");
 const result = document.querySelector("#display-result");
 const ropeImage = document.querySelector("#rope");
+const leftArrow = document.querySelector(".left-arrow");
+const upArrow = document.querySelector(".up-arrow");
+const downArrow = document.querySelector(".down-arrow");
+const rightArrow = document.querySelector(".right-arrow");
 
 // -- player 1 -- //
 const p1Image = document.querySelector("#p1-image");
@@ -58,10 +63,10 @@ const downSound = new Audio(
 const rightSound = new Audio(
   "https://s3.amazonaws.com/freecodecamp/simonSound4.mp3"
 );
-const awwSound = new Audio("media/aww_sound_effect.mp3");
 const cheerSound = new Audio(
   "http://soundbible.com/mp3/Kids%20Cheering-SoundBible.com-681813822.mp3"
 );
+const awwSound = new Audio("media/aww_sound_effect.mp3");
 
 //
 //--------------------------------------------------------------//
@@ -98,8 +103,11 @@ class Player {
     this.hits++;
   }
 
-  resetHits() {
+  resetHitsScoreHealth() {
     this.hits = 0;
+    this.score = 0;
+    this.health = 30;
+    healthBar.value = 30;
   }
 }
 
@@ -111,6 +119,7 @@ const p2 = new Player("Player 2", undefined, undefined, undefined);
 // for generating new game/round
 //--------------------------------------------------------------//
 
+//-- start-game event listerner --//
 // function to start a game by clicking start button
 function playGame() {
   startButton.addEventListener("click", (e) => {
@@ -133,74 +142,74 @@ function newGame() {
 
 // function for finishing a game
 function finishGame() {
-  // console.log(`game over`);
   clearInterval(interval);
   start = false;
   gameOver = true;
-  win();
+  determineWinner();
   startButton.innerText = "Restart";
   clock.innerText = "Game Over";
 }
 
 // function for clearing a game
+// resetting arrow colors to original state and hide results
 const clearRound = () => {
-  console.log(`colors reset`);
-  //-- p1 arrows --//
-  p1LeftArrow.style.borderRightColor = "lightgrey";
-  p1UpArrow.style.borderBottomColor = "lightgrey";
-  p1DownArrow.style.borderTopColor = "lightgrey";
-  p1RightArrow.style.borderLeftColor = "lightgrey";
-  //-- p2 arrows --//
-  p2LeftArrow.style.borderRightColor = "lightgrey";
-  p2UpArrow.style.borderBottomColor = "lightgrey";
-  p2DownArrow.style.borderTopColor = "lightgrey";
-  p2RightArrow.style.borderLeftColor = "lightgrey";
+  leftArrow.style.borderRightColor = "lightgrey";
+  upArrow.style.borderBottomColor = "lightgrey";
+  downArrow.style.borderTopColor = "lightgrey";
+  rightArrow.style.borderLeftColor = "lightgrey";
   //-- hiding results --//
   result.style.display = "none";
 };
 
-// function to reset scores
+// function to reset the screen original state
 function resetAll() {
-  p1.resetHits();
-  p1.score = 0;
-  p1.health = 30;
-  healthBar.value = 30;
-  p1ScoreBoard.innerText = 0;
-  p1Image.style.display = "block";
-  p1Image.src = "../image/man_side.gif";
+  resetPlayerStats(p1);
+  resetPlayerStats(p2);
+  updateImage(p1Image, "../image/man_side.gif", "block");
+  updateImage(p2Image, "../image/man_side.gif", "block");
   ropeImage.style.display = "block";
-  p2.resetHits();
-  p2.score = 0;
-  p2.health = 30;
+  p1ScoreBoard.innerText = 0;
   p2ScoreBoard.innerText = 0;
-  p2Image.style.display = "block";
-  p2Image.src = "../image/man_side.gif";
   timer = 30;
 }
 
+function resetPlayerStats(player) {
+  player.resetHitsScoreHealth();
+}
+
+function updateImage(image, src, displayStyle) {
+  image.style.display = displayStyle;
+  image.src = src;
+}
+
 // function for winning
-// winning will only based on final score after stipulated time
-function win() {
+// winning will only based on final health after stipulated time
+function determineWinner() {
   if (gameOver === true) {
     result.style.display = "block"; // display result
     ropeImage.style.display = "none";
     if (p1.health > p2.health) {
-      result.innerText = "Player 1 Wins!";
-      p1Image.src = "../image/man_jumping.gif";
-      p2Image.style.display = "none";
-      cheerSound.play();
+      win("Player 1", p1Image, p2Image);
     } else if (p1.health < p2.health) {
-      result.innerText = "Player 2 Wins!";
-      p2Image.src = "../image/man_jumping.gif";
-      p1Image.style.display = "none";
-      cheerSound.play();
+      win("Player 2", p2Image, p1Image);
     } else {
-      result.innerText = "It is a draw!";
-      p1Image.src = "../image/man_sighing.gif";
-      p2Image.src = "../image/man_sighing.gif";
-      awwSound.play();
+      draw(p1Image, p2Image);
     }
   }
+}
+
+function win(winnerName, winnerImage, loserImage) {
+  result.innerText = `${winnerName} Wins!`;
+  updateImage(winnerImage, "../image/man_jumping.gif", "block");
+  updateImage(loserImage, undefined, "none");
+  cheerSound.play();
+}
+
+function draw(player1Image, player2Image) {
+  result.innerText = `It is a draw!`;
+  updateImage(player1Image, "../image/man_sighing.gif", "block");
+  updateImage(player2Image, "../image/man_sighing.gif", "block");
+  awwSound.play();
 }
 
 // function for countdown timer
@@ -226,9 +235,10 @@ function randomExecutor() {
 }
 
 // function to determine which arrows will change colors
+// can be expanded to fit in more arrows (e.g. diagonals) for more complex game
 function randomArrowIndicator() {
   arrowIndicator = Math.floor(Math.random() * arrowArray.length);
-  console.log(arrowIndicator);
+
   if (arrowIndicator === 0) {
     arrowLeft();
   } else if (arrowIndicator === 1) {
@@ -242,7 +252,7 @@ function randomArrowIndicator() {
 
 //
 //-- changing arrow colors --//
-
+// only works when p1 arrows and p2 arrows are separately referenced
 const arrowLeft = () => {
   //-- p1 arrows --//
   p1LeftArrow.style.borderRightColor = "yellow";
@@ -303,28 +313,31 @@ const arrowRight = () => {
   rightSound.play();
 };
 
-// listening for keydown event for specific keys
+//
+//-- in-game event listener --//
+// listening for keydown event for specific keys matching conditions during game play
 window.addEventListener("keydown", (e) => {
+  // check if start is true to ensure event listener only works during game play
   if (start === true) {
     // prevent repeated keystrokes
     if (e.repeat) {
       return;
     }
 
-    // only want the following (p1) keys to be detected
+    // only want the following (p1/p2) keys to be detected while playing
     // for player 1
     if (e.key === "a" || e.key === "w" || e.key === "s" || e.key === "d") {
       if (arrowIndicator === 0 && e.key === "a") {
-        p1GoodHits();
+        goodHits(p1, p2);
         p1LeftArrow.style.borderRightColor = "green";
       } else if (arrowIndicator === 1 && e.key === "w") {
-        p1GoodHits();
+        goodHits(p1, p2);
         p1UpArrow.style.borderBottomColor = "green";
       } else if (arrowIndicator === 2 && e.key === "s") {
-        p1GoodHits();
+        goodHits(p1, p2);
         p1DownArrow.style.borderTopColor = "green";
       } else if (arrowIndicator === 3 && e.key === "d") {
-        p1GoodHits();
+        goodHits(p1, p2);
         p1RightArrow.style.borderLeftColor = "green";
       } else {
         p1MissedHits();
@@ -340,16 +353,16 @@ window.addEventListener("keydown", (e) => {
       e.key === "ArrowRight"
     ) {
       if (arrowIndicator === 0 && e.key === "ArrowLeft") {
-        p2GoodHits();
+        goodHits(p2, p1);
         p2LeftArrow.style.borderRightColor = "green";
       } else if (arrowIndicator === 1 && e.key === "ArrowUp") {
-        p2GoodHits();
+        goodHits(p2, p1);
         p2UpArrow.style.borderBottomColor = "green";
       } else if (arrowIndicator === 2 && e.key === "ArrowDown") {
-        p2GoodHits();
+        goodHits(p2, p1);
         p2DownArrow.style.borderTopColor = "green";
       } else if (arrowIndicator === 3 && e.key === "ArrowRight") {
-        p2GoodHits();
+        goodHits(p2, p1);
         p2RightArrow.style.borderLeftColor = "green";
       } else {
         p2MissedHits();
@@ -359,13 +372,16 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-function p1GoodHits() {
-  p1.hitsUp();
-  p1.scoreUp();
-  p1.healthUp();
-  p2.healthDown();
+// function for successful hit
+function goodHits(player, opponent) {
+  player.hitsUp();
+  player.scoreUp();
+  player.healthUp();
+  opponent.healthDown();
 }
 
+// function for missing a hit - needs to tracked separately
+// for player 1
 function p1MissedHits() {
   p1LeftArrow.style.borderRightColor = "red";
   p1UpArrow.style.borderBottomColor = "red";
@@ -373,13 +389,7 @@ function p1MissedHits() {
   p1RightArrow.style.borderLeftColor = "red";
 }
 
-function p2GoodHits() {
-  p2.hitsUp();
-  p2.scoreUp();
-  p2.healthUp();
-  p1.healthDown();
-}
-
+// for player 2
 function p2MissedHits() {
   p2LeftArrow.style.borderRightColor = "red";
   p2UpArrow.style.borderBottomColor = "red";
