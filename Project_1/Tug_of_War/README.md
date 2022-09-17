@@ -28,13 +28,13 @@ The game is coded using JavaScript featuring the following:
 
    - Holding down a key does not register and so does not result in additional points.
 
-3. Using the Math.random function, the arrows are lit (change from grey to yellow) at random. When the game starts, the setInterval method is used to activate the function.
+3. Using the Math.random function, the arrows are lit (change from grey to yellow) at random. When the game starts, the setInterval method will activate the function.
 
 4. The images of players and the rope are grouped in a div-tag and animated using keyframes in CSS to define the animation sequence.
 
 5. When the game concludes, the images of players are updated by using a function and if/else statements to modify the src attribute as well as display property of the image based the results of the game. The rope is removed from view by adjusting its display property.
 
-6. The audio constructor is used to add sound effects to the game to make it more engaging. When the arrows light up and the result is announced, different sound effects are played using the play() method.
+6. The audio constructor is used to add sound effects to the game to make it more engaging. Different sound effects are played using the play() method when the arrows light up and when the result is announced.
 
 7. setTimeout() method is used to control the duration of the game.
 
