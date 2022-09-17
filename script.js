@@ -169,8 +169,8 @@ const clearRound = () => {
 function resetAll() {
   resetPlayerStats(p1);
   resetPlayerStats(p2);
-  updateImage(p1Image, "../image/man_side.gif", "block");
-  updateImage(p2Image, "../image/man_side.gif", "block");
+  updateImage(p1Image, "image/man_side.gif", "block");
+  updateImage(p2Image, "image/man_side.gif", "block");
   ropeImage.style.display = "block";
   p1ScoreBoard.innerText = 0;
   p2ScoreBoard.innerText = 0;
@@ -207,7 +207,7 @@ function determineWinner() {
 // function for win condition
 function win(winnerName, winnerImage, loserImage) {
   result.innerText = `${winnerName} Wins!`;
-  updateImage(winnerImage, "../image/man_jumping.gif", "block");
+  updateImage(winnerImage, "image/man_jumping.gif", "block");
   updateImage(loserImage, undefined, "none");
   cheerSound.play();
 }
@@ -215,8 +215,8 @@ function win(winnerName, winnerImage, loserImage) {
 // function for draw condition
 function draw(player1Image, player2Image) {
   result.innerText = `It is a draw!`;
-  updateImage(player1Image, "../image/man_sighing.gif", "block");
-  updateImage(player2Image, "../image/man_sighing.gif", "block");
+  updateImage(player1Image, "image/man_sighing.gif", "block");
+  updateImage(player2Image, "image/man_sighing.gif", "block");
   awwSound.play();
 }
 
