@@ -4,12 +4,10 @@
 
 body {
   min-width: 1536px;
-  min-height: 714px;
   background-color: black;
   background-image: url(image/background_image_by_upklyak_on_Freepik.jpg);
-  background-size: 1536px 770px;
+  background-size: 1536px;
   background-repeat: no-repeat;
-  border: 1px solid purple;
   margin: 0;
   padding: 0;
   overflow: hidden;
@@ -36,15 +34,16 @@ body {
 }
 
 #middle {
-  height: 420px;
+  height: 450px;
 }
 
 #bottom {
-  height: 82px;
+  height: 100px;
 }
 
 .footer {
-  height: 50px;
+  max-width: 1536px;
+  height: 60px;
   margin-bottom: 15px;
 }
 
@@ -191,7 +190,7 @@ progress::-webkit-progress-value {
   width: 80px;
   height: 150px;
   position: absolute;
-  top: 120px;
+  top: 88px;
   left: -15px;
 }
 
@@ -200,7 +199,7 @@ progress::-webkit-progress-value {
   height: 150px;
   transform: scale(-1, 1);
   position: absolute;
-  bottom: 100px;
+  bottom: 132px;
   left: 545px;
 }
 
@@ -210,7 +209,7 @@ progress::-webkit-progress-value {
   background-color: sienna;
   border: 1px solid saddlebrown;
   position: absolute;
-  top: 238px;
+  top: 208px;
   left: 123px;
   transform: skew(0.06turn, -3.2deg);
 }
