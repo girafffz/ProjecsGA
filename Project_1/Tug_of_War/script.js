@@ -1,4 +1,4 @@
-console.log("Welcome to Tug-of-War");
+// console.log("Welcome to Tug-of-War");
 
 //////////////////////////////////////////////////////////////////////
 
@@ -130,13 +130,14 @@ function playGame() {
 }
 
 // function for each new game
+// setTimeout determines how long a game will run
 function newGame() {
   if (start === true) {
     clearRound();
     resetAll();
     randomExecutor();
     countDownTimer();
-    setTimeout(finishGame, 30000); // to change the timing
+    setTimeout(finishGame, 30000); // short game
   }
 }
 
@@ -151,17 +152,20 @@ function finishGame() {
 }
 
 // function for clearing a game
-// resetting arrow colors to original state and hide results
+// resetting timer, arrow colors to original state and hide results
 const clearRound = () => {
+  //-- reset arrow color --//
   leftArrow.style.borderRightColor = "lightgrey";
   upArrow.style.borderBottomColor = "lightgrey";
   downArrow.style.borderTopColor = "lightgrey";
   rightArrow.style.borderLeftColor = "lightgrey";
+  //-- reset timer --//
+  timer = 30;
   //-- hiding results --//
   result.style.display = "none";
 };
 
-// function to reset the screen original state
+// function to reset players stats and images to original state
 function resetAll() {
   resetPlayerStats(p1);
   resetPlayerStats(p2);
@@ -170,23 +174,25 @@ function resetAll() {
   ropeImage.style.display = "block";
   p1ScoreBoard.innerText = 0;
   p2ScoreBoard.innerText = 0;
-  timer = 30;
 }
 
+// function to reset player stats
 function resetPlayerStats(player) {
   player.resetHitsScoreHealth();
 }
 
+// function to update images and its display mode
 function updateImage(image, src, displayStyle) {
   image.style.display = displayStyle;
   image.src = src;
 }
 
-// function for winning
-// winning will only based on final health after stipulated time
+// function to determine winner
+// win condition: winner will be determined by final health after stipulated time (30s)
 function determineWinner() {
+  // checking if game is over before deciding the winner
   if (gameOver === true) {
-    result.style.display = "block"; // display result
+    result.style.display = "block"; // displays result
     ropeImage.style.display = "none";
     if (p1.health > p2.health) {
       win("Player 1", p1Image, p2Image);
@@ -198,6 +204,7 @@ function determineWinner() {
   }
 }
 
+// function for win condition
 function win(winnerName, winnerImage, loserImage) {
   result.innerText = `${winnerName} Wins!`;
   updateImage(winnerImage, "../image/man_jumping.gif", "block");
@@ -205,6 +212,7 @@ function win(winnerName, winnerImage, loserImage) {
   cheerSound.play();
 }
 
+// function for draw condition
 function draw(player1Image, player2Image) {
   result.innerText = `It is a draw!`;
   updateImage(player1Image, "../image/man_sighing.gif", "block");
@@ -230,12 +238,14 @@ function countDownTimer() {
 //--------------------------------------------------------------//
 
 // function to run random arrow indicator at set intervals
+// purpose is to allow arrows to change color at random endlessly until interval is cleared
+// speed can be changed for longer game duration
 function randomExecutor() {
-  interval = setInterval(randomArrowIndicator, 1000); // to change the speed
+  interval = setInterval(randomArrowIndicator, 1000); // easy
 }
 
 // function to determine which arrows will change colors
-// can be expanded to fit in more arrows (e.g. diagonals) for more complex game
+// can be expanded to fit in more arrows (e.g. diagonals) for a more complex game
 function randomArrowIndicator() {
   arrowIndicator = Math.floor(Math.random() * arrowArray.length);
 
@@ -250,7 +260,6 @@ function randomArrowIndicator() {
   }
 }
 
-//
 //-- changing arrow colors --//
 // only works when p1 arrows and p2 arrows are separately referenced
 const arrowLeft = () => {
@@ -324,7 +333,7 @@ window.addEventListener("keydown", (e) => {
       return;
     }
 
-    // only want the following (p1/p2) keys to be detected while playing
+    // only want the following (p1/p2) keys to be tracked while playing
     // for player 1
     if (e.key === "a" || e.key === "w" || e.key === "s" || e.key === "d") {
       if (arrowIndicator === 0 && e.key === "a") {
@@ -372,7 +381,7 @@ window.addEventListener("keydown", (e) => {
   }
 });
 
-// function for successful hit
+// function to update players stats for each successful hit
 function goodHits(player, opponent) {
   player.hitsUp();
   player.scoreUp();
@@ -380,7 +389,7 @@ function goodHits(player, opponent) {
   opponent.healthDown();
 }
 
-// function for missing a hit - needs to tracked separately
+// function to update players stats for missing a hit - needs to tracked separately
 // for player 1
 function p1MissedHits() {
   p1LeftArrow.style.borderRightColor = "red";
