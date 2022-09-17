@@ -3,8 +3,12 @@
 }
 
 body {
+  min-width: 1536px;
+  min-height: 714px;
+  background-color: black;
   background-image: url(image/background_image_by_upklyak_on_Freepik.jpg);
-  background-size: cover;
+  background-size: 1536px 770px;
+  background-repeat: no-repeat;
   border: 1px solid purple;
   margin: 0;
   padding: 0;
