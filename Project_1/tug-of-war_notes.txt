@@ -1,0 +1,73 @@
+tug-of-war
+
+// == How it works == //
+// Game play in general
+// 1. controls
+// >>> keyboard >> arrow keys (player1), a,w,s,d keys (player2)
+// 2. during a game
+// >>> arrows on screen will light up randomly (lighted: filled color, else outline only)
+// >>> hit the keys corresponding to the lighted arrows to score
+// 3. scoring system
+// >> a. 1-player game (high score within time, survival mode: health > 0 when timer runs out)
+// >>>> timer: 1 min
+// >>>> score is calculated by: perfect = 2, imperfect hit = 1, missed = 0
+// >>>> health is calculated by: missed = -1
+// >>>> win if timer runs out and health > 0
+// >>>> lost if timer runs out
+//============================================================
+
+win condition:
+===================
+if timer runs out
+if no health = 0,
+most health wins
+if health equals (draw), highest score wins
+
+lose condition:
+===================
+
+
+===================
+Need:
+===================
+===================
+1. score calculator
+===> hit (for each type count) x scoreMultiplier
+===> final score = add all together
+
+===================
+2. function for hitMatch
+===> matching flashing arrow + keydown
+
+===================
+3. function for accuracy
+===> comparing speed to which the keydown happens and when the arrow flash first flash
+
+3a. function for displayAccuracy
+===> display string about accuracy (ie. perfect!, missed!, maxCombo #)
+
+
+where anika get his suishi pic?
+
+tasks
+------------------
+1. create health bar
+2. fill bar with color based on current health pts
+3. health pts: +1 with hits, -1 for opponents (worst case: 2 bars that fills in different direction)
+3a. compare timing of the clicks
+4. add p2 keys
+5. arrows (flashing, to have the same flashes or not)
+5a. getting the arrows aligned properly
+5b. falling arrows
+6. 2x human figures + 1 rope (tug-of-war animation)
+7. loser falling animation
+8. wining message
+9. losing message
+10. need to crop the image to make it more central
+
+
+
+
+
+
+
