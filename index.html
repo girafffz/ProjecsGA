@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <title>Tug-of-War</title>
+  </head>
+  <body>
+    <!-- start of top section parent container -->
+    <div class="flex" id="top">
+      <div class="box left" id="top-left">
+        <div class="box score-board" id="player1-score">Player 1</div>
+      </div>
+      <div class="box center" id="top-center">
+        <div id="timer">Tug-of-War</div>
+      </div>
+      <div class="box right" id="top-right">
+        <div class="box score-board" id="player2-score">Player 2</div>
+      </div>
+    </div>
+
+    <!-- start of mid section parent container -->
+    <div class="flex" id="middle">
+      <div class="box left" id="mid-left">
+        <div class="box" id="player1-side"></div>
+      </div>
+      <div class="box center" id="mid-center">
+        <!-- start of health bar container -->
+        <div id="health-bar-main-container">
+          <div id="health-bar-container">
+            <progress
+              id="health-progress"
+              value="30"
+              min="0"
+              max="60"
+            ></progress>
+          </div>
+        </div>
+        <!-- end of health bar container -->
+        <div id="players-container">
+          <div id="display-result"></div>
+          <div id="player1">
+            <img
+              id="p1-image"
+              src="../image/man_side.gif"
+              width="200px"
+              height="200px"
+            />
+          </div>
+          <div id="rope"></div>
+          <div id="player2">
+            <img
+              id="p2-image"
+              src="../image/man_side.gif"
+              width="200px"
+              height="200px"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="box right" id="mid-right">
+        <div class="box" id="player2-side"></div>
+      </div>
+    </div>
+
+    <!-- start of bottom section parent container -->
+    <div class="flex" id="bottom">
+      <div class="box left" id="bottom-left">
+        <div class="box arrow-container" id="player1-arrows">
+          <!-- <p>player1 arrows</p> -->
+          <div class="arrow left-arrow p1-arrow" id="left-p1"></div>
+          <div class="arrow up-arrow p1-arrow" id="up-p1"></div>
+          <div class="arrow down-arrow p1-arrow" id="down-p1"></div>
+          <div class="arrow right-arrow p1-arrow" id="right-p1"></div>
+          <div class="instructions">Use AWSD keys</div>
+        </div>
+      </div>
+      <div class="box center" id="bottom-center">
+        <button id="start-btn">Start</button>
+      </div>
+      <div class="box right" id="bottom-right">
+        <div class="box arrow-container" id="player2-arrows">
+          <!-- <p>player2 arrows</p> -->
+          <div class="arrow left-arrow p2-arrow" id="left-p2"></div>
+          <div class="arrow up-arrow p2-arrow" id="up-p2"></div>
+          <div class="arrow down-arrow p2-arrow" id="down-p2"></div>
+          <div class="arrow right-arrow p2-arrow" id="right-p2"></div>
+          <div class="instructions">Use ARROW keys</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box footer">
+      <p>
+        created by: stephanie luo<br />background image by upklyak on Freepik<br />player
+        image by mewily
+      </p>
+    </div>
+    <!-- script -->
+    <script src="script.js" charset="UTF-8"></script>
+  </body>
+</html>
