@@ -10,7 +10,7 @@ As someone who enjoys rhythm and reaction games but finds them extremely stressf
 
 When the game begins, arrows will randomly change colors from grey to yellow, and each player will then press the keys on the keyboard that correspond to the "lighted" arrow. The WASD keys will be used by Player 1, while the arrow keys will be used by Player 2. Every matching hit deducts one health point from the opponent's health. The person with the most health after 30 seconds wins the game.
 
-The live version of the game is accessible from this link.
+The live version of the game is accessible from this [link](https://girafffz.github.io/Tug-of-War/).
 
 <br/>
 
